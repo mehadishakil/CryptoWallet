@@ -1,10 +1,3 @@
-//
-//  HomeView.swift
-//  CryptoWallet
-//
-//  Created by Nikita on 27.12.2022.
-//
-
 import SwiftUI
 
 struct MainView: View {

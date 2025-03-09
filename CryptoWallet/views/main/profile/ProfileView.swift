@@ -1,10 +1,3 @@
-//
-//  ProfileView.swift
-//  CryptoWallet
-//
-//  Created by Nikita on 13.01.2023.
-//
-
 import SwiftUI
 
 struct ProfileView: View {
