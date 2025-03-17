@@ -1,3 +1,4 @@
+
 import SwiftUI
 
 struct WelcomeView: View {
@@ -35,7 +36,7 @@ struct WelcomeView: View {
                             
                             Text("Instantly").foregroundColor(.purple).font(.custom(FontUtils.MAIN_BOLD, size: 32))
                                 .underline()
-                                .gradientForeground([Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3") ])
+                                .gradientForeground([Color(hex: "#7A17D7"), Color(hex: "#ED74CD"), Color(hex: "#EBB5A3") ])
                         }
                         
                             
@@ -47,7 +48,10 @@ struct WelcomeView: View {
                             .padding(.top, 1)
                         
                         Spacer(minLength: 20)
-
+                        
+                        NavigationLink(destination: SecretPhraseView(),
+                                                                      isActive: $isNewWallet,
+                                                                      label: {  })
                         
                         NavigationLink(destination: MainView(),
                                        isActive: $isHasWallet,
