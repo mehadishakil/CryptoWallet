@@ -1,10 +1,3 @@
-//
-//  NFT.swift
-//  CryptoWallet
-//
-//  Created by Nikita on 05.01.2023.
-//
-
 import Foundation
 
 import SwiftUI

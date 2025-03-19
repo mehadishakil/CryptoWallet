@@ -14,40 +14,39 @@ struct MainView: View {
                 .edgesIgnoringSafeArea(.all)
             
                 
-//            ScrollView {
-//                ZStack {
-//                    switch selectedIndex {
-//                    case 0:
-//                        //HomeView()
-//                            
-//                    case 1:
-//                        SearchView()
-//                    case 2:
-//                        ScanView()
-//                    case 3:
-//                        
-//                        RadialGradient(gradient: Gradient(colors: [.purple.opacity(0.5), .white]), center: .topTrailing, startRadius: 30, endRadius: 300)
-//                            .opacity(1)
-//                            .edgesIgnoringSafeArea(.all)
-//                        
-//                        NFTPortfolioView()
-//                            .padding(.top, 55)
-//                        
-//                        
-//                        
-//                    default:
-//                        RadialGradient(gradient: Gradient(colors: [Color(hex: "#7A17D7"), Color(hex: "#ED74CD"), Color(hex: "#EBB5A3") ]), center: .topTrailing, startRadius: 100, endRadius: 800)
-//                            .frame(height: 550)
-//                            .edgesIgnoringSafeArea(.top)
-//                        
-//                        ProfileView()
-//                            .padding(.top, 50)
-//                        
-//                    }
-//                }
-//                
-//            }
-//            .edgesIgnoringSafeArea(.top)
+            ScrollView {
+                ZStack {
+                    switch selectedIndex {
+                    case 0:
+                        HomeView()
+                    case 1:
+                        SearchView()
+                    case 2:
+                        ScanView()
+                    case 3:
+                        
+                        RadialGradient(gradient: Gradient(colors: [.purple.opacity(0.5), .white]), center: .topTrailing, startRadius: 30, endRadius: 300)
+                            .opacity(1)
+                            .edgesIgnoringSafeArea(.all)
+                        
+                        NFTPortfolioView()
+                            .padding(.top, 55)
+                        
+                        
+                        
+                    default:
+                        RadialGradient(gradient: Gradient(colors: [Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3") ]), center: .topTrailing, startRadius: 100, endRadius: 800)
+                            .frame(height: 550)
+                            .edgesIgnoringSafeArea(.top)
+                        
+                        ProfileView()
+                            .padding(.top, 50)
+                        
+                    }
+                }
+                
+            }
+            .edgesIgnoringSafeArea(.top)
             
             
 

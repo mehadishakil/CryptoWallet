@@ -125,7 +125,7 @@ struct BottomView: View {
         VStack {
             VStack{
                 Color.gray.frame(height: 10 / UIScreen.main.scale)
-                    .gradientForeground([Color(hex: "#7A17D7"), Color(hex: "#ED74CD"), Color(hex: "#EBB5A3") ])
+                    .gradientForeground([Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3") ])
             }
             .padding(.top, -20)
             

@@ -1,10 +1,3 @@
-//
-//  View+Extension.swift
-//  CryptoWallet
-//
-//  Created by Nikita on 14.12.2022.
-//
-
 import Foundation
 import SwiftUI
 

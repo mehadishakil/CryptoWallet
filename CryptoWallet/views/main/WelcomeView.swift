@@ -36,7 +36,7 @@ struct WelcomeView: View {
                             
                             Text("Instantly").foregroundColor(.purple).font(.custom(FontUtils.MAIN_BOLD, size: 32))
                                 .underline()
-                                .gradientForeground([Color(hex: "#7A17D7"), Color(hex: "#ED74CD"), Color(hex: "#EBB5A3") ])
+                                .gradientForeground([Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3") ])
                         }
                         
                             

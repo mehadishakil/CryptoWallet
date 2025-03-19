@@ -1,10 +1,3 @@
-//
-//  NFTPortfolioView.swift
-//  CryptoWallet
-//
-//  Created by Nikita on 05.01.2023.
-//
-
 import SwiftUI
 
 struct NFTPortfolioView: View {
@@ -74,7 +67,7 @@ struct NFTItemView: View {
             AsyncImage(url: URL(string: nft.imgUrl)) { image in image.resizable()
                 
             } placeholder: { Color.gray }
-                .frame(width: 160, height: 160)
+                .frame(width: 150, height: 150)
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 10))
             
@@ -142,6 +135,6 @@ struct NFTItemView: View {
             .padding(.top, 5)
         }
         .padding(15)
-        .frame(width: 190)
+        .frame(width: 170)
     }
 }

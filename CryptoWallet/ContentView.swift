@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  CryptoWallet
-//
-//  Created by Mehadi Hasan on 3/3/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {

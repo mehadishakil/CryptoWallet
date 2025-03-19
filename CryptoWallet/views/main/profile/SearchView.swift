@@ -1,10 +1,3 @@
-//
-//  SearchView.swift
-//  CryptoWallet
-//
-//  Created by Nikita on 06.01.2023.
-//
-
 import SwiftUI
 
 struct SearchView: View {
