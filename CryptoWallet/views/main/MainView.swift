@@ -4,58 +4,48 @@ struct MainView: View {
     
     @State var selectedIndex = 0
     
-  
+    
     var body: some View {
         
         ZStack(alignment: .bottom) {
             
-
+            
             Color(.white)
                 .edgesIgnoringSafeArea(.all)
             
-                
-            ScrollView {
-                ZStack {
-                    switch selectedIndex {
-                    case 0:
-                        HomeView()
-                    case 1:
-                        SearchView()
-                    case 2:
-                        ScanView()
-                    case 3:
-                        
-                        RadialGradient(gradient: Gradient(colors: [.purple.opacity(0.5), .white]), center: .topTrailing, startRadius: 30, endRadius: 300)
-                            .opacity(1)
-                            .edgesIgnoringSafeArea(.all)
-                        
-                        NFTPortfolioView()
-                            .padding(.top, 55)
-                        
-                        
-                        
-                    default:
-                        RadialGradient(gradient: Gradient(colors: [Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3") ]), center: .topTrailing, startRadius: 100, endRadius: 800)
+            
+            
+            ZStack {
+                switch selectedIndex {
+                case 0:
+                    ScrollView { HomeView() }
+                case 1:
+                    ScrollView { SearchView() }
+                case 2:
+                    ScrollView { ScanView() }
+                case 3:
+                    InvoiceScreenView() // No ScrollView wrapper
+                default:
+                    ScrollView {
+                        RadialGradient(gradient: Gradient(colors: [Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3")]), center: .topTrailing, startRadius: 100, endRadius: 800)
                             .frame(height: 550)
                             .edgesIgnoringSafeArea(.top)
                         
                         ProfileView()
                             .padding(.top, 50)
-                        
                     }
                 }
-                
             }
             .edgesIgnoringSafeArea(.top)
             
             
-
+            
             
             
             
             BottomNavigationView(selectedIndex: $selectedIndex)
                 .edgesIgnoringSafeArea(.bottom)
-                
+            
         }
         .navigationBarBackButtonHidden()
         .preferredColorScheme(.dark)
@@ -78,7 +68,7 @@ struct BottomNavigationView: View {
         "house",
         "magnifyingglass",
         "qrcode.viewfinder",
-        "crown",
+        "text.document",
         "person"
     ]
     
@@ -88,14 +78,14 @@ struct BottomNavigationView: View {
             ZStack {
                 Divider()
                     .shadow(radius: 10)
+                
+                ZStack {
                     
-                    ZStack {
-                    
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: 50)
-                    .background(.white)
-                    
-                    
+                }
+                .frame(maxWidth: .infinity, maxHeight: 50)
+                .background(.white)
+                
+                
                 
                 
                 HStack {

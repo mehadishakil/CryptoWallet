@@ -29,9 +29,9 @@ struct HomeView: View {
     ]
     
     var lists = [
-        "💠 All",
-        "⭐️ Favorites",
-        "📺 Watchlist"
+        "All",
+        "Sent",
+        "Received"
     ]
     
     init() {
@@ -73,7 +73,7 @@ struct HomeView: View {
                 }
                 .padding(.horizontal, 15)
                 
-                SectionButtonView(title: "Lists", action: {
+                SectionButtonView(title: "Recent Transactions", action: {
                     Toast.text("Lists clicked").show()
                 })
                 
@@ -266,14 +266,14 @@ struct YourStockItemView: View {
                     VStack (alignment: .leading) {
                         Text(coinName)
                             .font(.custom(FontUtils.MAIN_BOLD, size: 16))
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .padding(.bottom, 5)
                         
                         
                         
                         Text(coinTicker)
                             .font(.custom(FontUtils.MAIN_MEDIUM, size: 14))
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                             .opacity(0.5)
                     }
                     
@@ -287,7 +287,7 @@ struct YourStockItemView: View {
                     VStack (alignment: .leading) {
                         Text("$\(coinPrice)")
                             .font(.custom(FontUtils.MAIN_BOLD, size: 16))
-                            .foregroundColor(.white)
+                            .foregroundColor(.primary)
                         
                         HStack (alignment: .center) {
                             Image(systemName: coinGoingUp ? "chevron.up" : "chevron.down")
@@ -316,7 +316,7 @@ struct YourStockItemView: View {
                                 y: .value("y", Int.random(in: 0...5))
                             )
                             .lineStyle(.init(lineWidth: 2))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.primary)
                             .opacity(0.5)
                             
                         }
@@ -328,11 +328,8 @@ struct YourStockItemView: View {
                 
             }
             .padding()
-            .frame(width: 190, height: 170)
-            .background( LinearGradient(
-                colors: coinColors,
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing))
+            .frame(width: 300, height: 170)
+            .background(.white)
             
             .cornerRadius(15, corners: .allCorners)
             .shadow(radius: 3)
@@ -372,81 +369,86 @@ struct ListsCategoriesView: View {
     var lists: [String]
     
     var body: some View {
-        ScrollView (.horizontal, showsIndicators: false) {
-            HStack {
-                
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 15) {
                 ForEach(lists, id: \.self) { string in
                     Button(action: {
                         selectedList = string
                     }, label: {
-                        Text(string)
-                            .font(.custom(FontUtils.MAIN_BOLD, size: 16))
-                            .foregroundColor(selectedList == string ? .white : .black)
-                            .padding(10)
-                            .padding(.horizontal, 5)
-                            .background(selectedList == string ? .black : .white)
-                            .cornerRadius(20, corners: .allCorners)
-                        
+                        HStack {
+                            Image(systemName: iconName(for: string))
+                                .font(.system(size: 14, weight: .bold))
+                            Text(string)
+                                .font(.custom(FontUtils.MAIN_BOLD, size: 16))
+                        }
+                        .foregroundColor(selectedList == string ? .white : .black)
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 16)
+                        .background(selectedList == string ? Color.black : Color.white)
+                        .cornerRadius(20)
+                        .shadow(color: .gray.opacity(0.1), radius: 1, x: 0, y: 1)
                     })
                 }
-                
             }
+            .padding(.horizontal, 30)
         }
-        .padding(.horizontal, 30)
+    }
+    
+    func iconName(for list: String) -> String {
+        switch list {
+        case "Sent":
+            return "arrow.up.right"
+        case "Received":
+            return "arrow.down.left"
+        default:
+            return "tray.full"
+        }
     }
 }
 
+
 struct ListItemView: View {
-    
     var coin: Coin
-    
+
     var body: some View {
-        HStack {
-            AsyncImage(url: URL(string: coin.coinImage)) { image in image.resizable()
-                
-            } placeholder: { Color.gray }
-                .frame(width: 45, height: 45)
-                .scaledToFit()
-                .clipShape(RoundedRectangle(cornerRadius: 40))
-            
-            VStack (alignment: .leading) {
-                Text(coin.coinName)
-                    .font(.custom(FontUtils.MAIN_BOLD, size: 16))
-                    .foregroundColor(.black)
-                    .padding(.bottom, 5)
-                
-                HStack (alignment: .center) {
-                    Image(systemName: coin.coinGoingUp ? "chevron.up" : "chevron.down")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 12)
-                        .foregroundColor(coin.coinGoingUp ? .green : .red)
-                        .font(Font.title.weight(.bold))
-                    
-                    Text("\(coin.coinMove)%")
-                        .font(.custom(FontUtils.MAIN_REGULAR, size: 14))
-                        .foregroundColor(coin.coinGoingUp ? .green : .red)
-                    
-                }
-                
-                
+        HStack(spacing: 15) {
+            ZStack {
+                Circle()
+                    .fill(coin.coinGoingUp ? Color.green.opacity(0.1) : Color.red.opacity(0.1))
+                    .frame(width: 44, height: 44)
+                Image(systemName: coin.coinGoingUp ? "arrow.down.left" : "arrow.up.right")
+                    .foregroundColor(coin.coinGoingUp ? .green : .red)
+                    .font(.system(size: 18, weight: .bold))
             }
-            
-            Spacer()
-            
-            VStack (alignment: .trailing) {
-                Text("$\(coin.coinPrice)")
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(coin.coinGoingUp ? "Received" : "Sent")
                     .font(.custom(FontUtils.MAIN_BOLD, size: 16))
                     .foregroundColor(.black)
-                    .padding(.bottom, 5)
-                
-                Text("MCap $\(coin.mcap) Bn")
+
+                Text("From: Coinbase Wallet")
                     .font(.custom(FontUtils.MAIN_REGULAR, size: 13))
-                    .foregroundColor(.black)
+                    .foregroundColor(.gray)
             }
-            
+
+            Spacer()
+
+            VStack(alignment: .trailing, spacing: 4) {
+                Text("\(coin.coinGoingUp ? "+" : "-")$\(coin.coinPrice)")
+                    .font(.custom(FontUtils.MAIN_BOLD, size: 16))
+                    .foregroundColor(.black)
+
+                Text("Jun 27, 2025")
+                    .font(.custom(FontUtils.MAIN_REGULAR, size: 13))
+                    .foregroundColor(.gray)
+            }
         }
         .padding(.horizontal, 30)
-        .padding(.bottom, 10)
+        .padding(.vertical, 10)
+        .background(Color.white)
+        .cornerRadius(12)
+        .shadow(color: .gray.opacity(0.05), radius: 2, x: 0, y: 1)
+        .padding(.bottom, 8)
     }
 }
+

@@ -10,18 +10,20 @@ struct WelcomeView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                RadialGradient(gradient: Gradient(colors: [Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3") ]), center: .topTrailing, startRadius: 100, endRadius: 800)
-                    .opacity(1)
+                Color(.white)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
                     
-                    ZStack  {
-                        Image("welcome_crypto")
+                    VStack  {
+                        Image("logo")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 300)
+                            .frame(width: 150)
                             .padding(.top, 50)
+                        
+                        Text("CryptoWallet")
+                            .font(.title.bold())
                     }
                   
                     Spacer()

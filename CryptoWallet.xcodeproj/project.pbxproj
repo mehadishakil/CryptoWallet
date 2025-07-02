@@ -33,9 +33,33 @@
 		E81E63682D75A7AC008D1210 /* CryptoWalletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CryptoWalletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		E8F329C62E15416400D927A3 /* Exceptions for "CryptoWallet" folder in "CryptoWallet" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"views/main/extensions/ DateFormatter+Extensions.swift",
+			);
+			target = E81E634D2D75A7AB008D1210 /* CryptoWallet */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		E8F329C72E15416400D927A3 /* Exceptions for "CryptoWallet" folder in "Copy Bundle Resources" phase from "CryptoWallet" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = E81E634C2D75A7AB008D1210 /* Resources */;
+			membershipExceptions = (
+				"views/main/extensions/ DateFormatter+Extensions.swift",
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		E81E63502D75A7AB008D1210 /* CryptoWallet */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				E8F329C62E15416400D927A3 /* Exceptions for "CryptoWallet" folder in "CryptoWallet" target */,
+				E8F329C72E15416400D927A3 /* Exceptions for "CryptoWallet" folder in "Copy Bundle Resources" phase from "CryptoWallet" target */,
+			);
 			path = CryptoWallet;
 			sourceTree = "<group>";
 		};

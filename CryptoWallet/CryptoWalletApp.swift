@@ -4,7 +4,7 @@ import SwiftUI
 struct CryptoWalletApp: App {
     var body: some Scene {
         WindowGroup {
-            SplashView()
-        }
+            MainView()
+        }.modelContainer(for: [Invoice.self])
     }
 }
