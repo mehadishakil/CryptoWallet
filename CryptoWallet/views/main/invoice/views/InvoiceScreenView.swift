@@ -75,7 +75,7 @@ struct InvoiceScreenView: View {
                             HStack {
                                 Image(systemName: "plus.circle.fill")
                                     .font(/*@START_MENU_TOKEN@*/.title/*@END_MENU_TOKEN@*/)
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(.primary)
                             }
 
                         })
