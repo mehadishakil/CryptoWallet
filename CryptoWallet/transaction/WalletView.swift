@@ -9,6 +9,8 @@ struct WalletView: View {
     @State private var showingImportSheet = false
     @State private var showingPrivateKey = false
     
+    
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
