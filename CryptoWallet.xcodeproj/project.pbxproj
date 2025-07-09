@@ -7,17 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E80EBB352E1B95D20081B484 /* NFCPassportReader in Frameworks */ = {isa = PBXBuildFile; productRef = E80EBB342E1B95D20081B484 /* NFCPassportReader */; };
-		E80EBB382E1B96710081B484 /* PersonaNfc in Frameworks */ = {isa = PBXBuildFile; productRef = E80EBB372E1B96710081B484 /* PersonaNfc */; };
-		E80EBB3B2E1B97320081B484 /* PersonaOpenSSL in Frameworks */ = {isa = PBXBuildFile; productRef = E80EBB3A2E1B97320081B484 /* PersonaOpenSSL */; };
-		E81E63842D75AC18008D1210 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = E81E63832D75AC18008D1210 /* Toast */; };
-		E82D1EA02E1CDC5100910430 /* BigInt in Frameworks */ = {isa = PBXBuildFile; productRef = E82D1E9F2E1CDC5100910430 /* BigInt */; };
-		E82D1EA32E1CDC6800910430 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E82D1EA22E1CDC6800910430 /* CryptoSwift */; };
-		E8488A162E19555E00573721 /* DocumentReader in Frameworks */ = {isa = PBXBuildFile; productRef = E8488A152E19555E00573721 /* DocumentReader */; };
-		E8488A192E1955C400573721 /* FullRFID in Frameworks */ = {isa = PBXBuildFile; productRef = E8488A182E1955C400573721 /* FullRFID */; };
-		E84CA77D2E1D2BF10027D4CC /* secp256k1 in Frameworks */ = {isa = PBXBuildFile; productRef = E84CA77C2E1D2BF10027D4CC /* secp256k1 */; };
-		E84CA77F2E1D2BF10027D4CC /* zkp in Frameworks */ = {isa = PBXBuildFile; productRef = E84CA77E2E1D2BF10027D4CC /* zkp */; };
-		E8638AB62E1586A100442EBA /* PersonaInquirySDK2 in Frameworks */ = {isa = PBXBuildFile; productRef = E8638AB52E1586A100442EBA /* PersonaInquirySDK2 */; };
+		E825C16A2E1D9783003D73C3 /* secp256k1 in Frameworks */ = {isa = PBXBuildFile; productRef = E825C1692E1D9783003D73C3 /* secp256k1 */; };
+		E825C1762E1D9E79003D73C3 /* secp256k1 in Frameworks */ = {isa = PBXBuildFile; productRef = E825C1752E1D9E79003D73C3 /* secp256k1 */; };
+		E85112A02E1D573E006CA44E /* BigInt in Frameworks */ = {isa = PBXBuildFile; productRef = E851129F2E1D573E006CA44E /* BigInt */; };
+		E85112A32E1D575C006CA44E /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = E85112A22E1D575C006CA44E /* Toast */; };
+		E85112A62E1D57FE006CA44E /* PersonaInquirySDK2 in Frameworks */ = {isa = PBXBuildFile; productRef = E85112A52E1D57FE006CA44E /* PersonaInquirySDK2 */; };
+		E85112A92E1D8C07006CA44E /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E85112A82E1D8C07006CA44E /* CryptoSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,17 +75,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E84CA77F2E1D2BF10027D4CC /* zkp in Frameworks */,
-				E8488A192E1955C400573721 /* FullRFID in Frameworks */,
-				E80EBB3B2E1B97320081B484 /* PersonaOpenSSL in Frameworks */,
-				E80EBB382E1B96710081B484 /* PersonaNfc in Frameworks */,
-				E82D1EA32E1CDC6800910430 /* CryptoSwift in Frameworks */,
-				E84CA77D2E1D2BF10027D4CC /* secp256k1 in Frameworks */,
-				E82D1EA02E1CDC5100910430 /* BigInt in Frameworks */,
-				E8488A162E19555E00573721 /* DocumentReader in Frameworks */,
-				E81E63842D75AC18008D1210 /* Toast in Frameworks */,
-				E80EBB352E1B95D20081B484 /* NFCPassportReader in Frameworks */,
-				E8638AB62E1586A100442EBA /* PersonaInquirySDK2 in Frameworks */,
+				E85112A32E1D575C006CA44E /* Toast in Frameworks */,
+				E825C1762E1D9E79003D73C3 /* secp256k1 in Frameworks */,
+				E825C16A2E1D9783003D73C3 /* secp256k1 in Frameworks */,
+				E85112A92E1D8C07006CA44E /* CryptoSwift in Frameworks */,
+				E85112A02E1D573E006CA44E /* BigInt in Frameworks */,
+				E85112A62E1D57FE006CA44E /* PersonaInquirySDK2 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,17 +141,12 @@
 			);
 			name = CryptoWallet;
 			packageProductDependencies = (
-				E81E63832D75AC18008D1210 /* Toast */,
-				E8638AB52E1586A100442EBA /* PersonaInquirySDK2 */,
-				E8488A152E19555E00573721 /* DocumentReader */,
-				E8488A182E1955C400573721 /* FullRFID */,
-				E80EBB342E1B95D20081B484 /* NFCPassportReader */,
-				E80EBB372E1B96710081B484 /* PersonaNfc */,
-				E80EBB3A2E1B97320081B484 /* PersonaOpenSSL */,
-				E82D1E9F2E1CDC5100910430 /* BigInt */,
-				E82D1EA22E1CDC6800910430 /* CryptoSwift */,
-				E84CA77C2E1D2BF10027D4CC /* secp256k1 */,
-				E84CA77E2E1D2BF10027D4CC /* zkp */,
+				E851129F2E1D573E006CA44E /* BigInt */,
+				E85112A22E1D575C006CA44E /* Toast */,
+				E85112A52E1D57FE006CA44E /* PersonaInquirySDK2 */,
+				E85112A82E1D8C07006CA44E /* CryptoSwift */,
+				E825C1692E1D9783003D73C3 /* secp256k1 */,
+				E825C1752E1D9E79003D73C3 /* secp256k1 */,
 			);
 			productName = CryptoWallet;
 			productReference = E81E634E2D75A7AB008D1210 /* CryptoWallet.app */;
@@ -246,17 +231,11 @@
 			mainGroup = E81E63452D75A7AB008D1210;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				E81E63822D75AC18008D1210 /* XCRemoteSwiftPackageReference "toast-swift" */,
-				E8638AB42E1586A100442EBA /* XCRemoteSwiftPackageReference "inquiry-ios-2" */,
-				E8488A142E19555E00573721 /* XCRemoteSwiftPackageReference "DocumentReader-Swift-Package" */,
-				E8488A172E1955C400573721 /* XCRemoteSwiftPackageReference "DocumentReaderFullRFID-Swift-Package" */,
-				E80EBB332E1B95D20081B484 /* XCRemoteSwiftPackageReference "NFCPassportReader" */,
-				E80EBB362E1B96710081B484 /* XCRemoteSwiftPackageReference "inquiry-ios-nfc" */,
-				E80EBB392E1B97320081B484 /* XCRemoteSwiftPackageReference "PersonaOpenSSL" */,
-				E82D1E9E2E1CDC5100910430 /* XCRemoteSwiftPackageReference "BigInt" */,
-				E82D1EA12E1CDC6800910430 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
-				E84CA77B2E1D2BF10027D4CC /* XCRemoteSwiftPackageReference "secp256k1.swift" */,
-				E84CA7802E1D36DC0027D4CC /* XCRemoteSwiftPackageReference "web3swift" */,
+				E851129E2E1D573E006CA44E /* XCRemoteSwiftPackageReference "BigInt" */,
+				E85112A12E1D575C006CA44E /* XCRemoteSwiftPackageReference "toast-swift" */,
+				E85112A42E1D57FE006CA44E /* XCRemoteSwiftPackageReference "inquiry-ios-2" */,
+				E85112A72E1D8C07006CA44E /* XCRemoteSwiftPackageReference "CryptoSwift" */,
+				E825C1742E1D9E79003D73C3 /* XCRemoteSwiftPackageReference "secp256k1.swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E81E634F2D75A7AB008D1210 /* Products */;
@@ -620,39 +599,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		E80EBB332E1B95D20081B484 /* XCRemoteSwiftPackageReference "NFCPassportReader" */ = {
+		E825C1742E1D9E79003D73C3 /* XCRemoteSwiftPackageReference "secp256k1.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AndyQ/NFCPassportReader.git";
+			repositoryURL = "https://github.com/Boilertalk/secp256k1.swift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.2;
+				minimumVersion = 0.1.7;
 			};
 		};
-		E80EBB362E1B96710081B484 /* XCRemoteSwiftPackageReference "inquiry-ios-nfc" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/persona-id/inquiry-ios-nfc.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.28.0;
-			};
-		};
-		E80EBB392E1B97320081B484 /* XCRemoteSwiftPackageReference "PersonaOpenSSL" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/persona-id/PersonaOpenSSL.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.1;
-			};
-		};
-		E81E63822D75AC18008D1210 /* XCRemoteSwiftPackageReference "toast-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/BastiaanJansen/toast-swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.1.3;
-			};
-		};
-		E82D1E9E2E1CDC5100910430 /* XCRemoteSwiftPackageReference "BigInt" */ = {
+		E851129E2E1D573E006CA44E /* XCRemoteSwiftPackageReference "BigInt" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/attaswift/BigInt.git";
 			requirement = {
@@ -660,7 +615,23 @@
 				minimumVersion = 5.1.0;
 			};
 		};
-		E82D1EA12E1CDC6800910430 /* XCRemoteSwiftPackageReference "CryptoSwift" */ = {
+		E85112A12E1D575C006CA44E /* XCRemoteSwiftPackageReference "toast-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BastiaanJansen/toast-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.3;
+			};
+		};
+		E85112A42E1D57FE006CA44E /* XCRemoteSwiftPackageReference "inquiry-ios-2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/persona-id/inquiry-ios-2.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.28.1;
+			};
+		};
+		E85112A72E1D8C07006CA44E /* XCRemoteSwiftPackageReference "CryptoSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/krzyzanowskim/CryptoSwift.git";
 			requirement = {
@@ -668,103 +639,37 @@
 				minimumVersion = 1.8.5;
 			};
 		};
-		E8488A142E19555E00573721 /* XCRemoteSwiftPackageReference "DocumentReader-Swift-Package" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/regulaforensics/DocumentReader-Swift-Package";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.1.4772;
-			};
-		};
-		E8488A172E1955C400573721 /* XCRemoteSwiftPackageReference "DocumentReaderFullRFID-Swift-Package" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/regulaforensics/DocumentReaderFullRFID-Swift-Package";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 8.1.12876;
-			};
-		};
-		E84CA77B2E1D2BF10027D4CC /* XCRemoteSwiftPackageReference "secp256k1.swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/GigaBitcoin/secp256k1.swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.21.1;
-			};
-		};
-		E84CA7802E1D36DC0027D4CC /* XCRemoteSwiftPackageReference "web3swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/skywinder/web3swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.3.0;
-			};
-		};
-		E8638AB42E1586A100442EBA /* XCRemoteSwiftPackageReference "inquiry-ios-2" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/persona-id/inquiry-ios-2.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.28.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		E80EBB342E1B95D20081B484 /* NFCPassportReader */ = {
+		E825C1692E1D9783003D73C3 /* secp256k1 */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E80EBB332E1B95D20081B484 /* XCRemoteSwiftPackageReference "NFCPassportReader" */;
-			productName = NFCPassportReader;
-		};
-		E80EBB372E1B96710081B484 /* PersonaNfc */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E80EBB362E1B96710081B484 /* XCRemoteSwiftPackageReference "inquiry-ios-nfc" */;
-			productName = PersonaNfc;
-		};
-		E80EBB3A2E1B97320081B484 /* PersonaOpenSSL */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E80EBB392E1B97320081B484 /* XCRemoteSwiftPackageReference "PersonaOpenSSL" */;
-			productName = PersonaOpenSSL;
-		};
-		E81E63832D75AC18008D1210 /* Toast */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E81E63822D75AC18008D1210 /* XCRemoteSwiftPackageReference "toast-swift" */;
-			productName = Toast;
-		};
-		E82D1E9F2E1CDC5100910430 /* BigInt */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E82D1E9E2E1CDC5100910430 /* XCRemoteSwiftPackageReference "BigInt" */;
-			productName = BigInt;
-		};
-		E82D1EA22E1CDC6800910430 /* CryptoSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E82D1EA12E1CDC6800910430 /* XCRemoteSwiftPackageReference "CryptoSwift" */;
-			productName = CryptoSwift;
-		};
-		E8488A152E19555E00573721 /* DocumentReader */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E8488A142E19555E00573721 /* XCRemoteSwiftPackageReference "DocumentReader-Swift-Package" */;
-			productName = DocumentReader;
-		};
-		E8488A182E1955C400573721 /* FullRFID */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E8488A172E1955C400573721 /* XCRemoteSwiftPackageReference "DocumentReaderFullRFID-Swift-Package" */;
-			productName = FullRFID;
-		};
-		E84CA77C2E1D2BF10027D4CC /* secp256k1 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E84CA77B2E1D2BF10027D4CC /* XCRemoteSwiftPackageReference "secp256k1.swift" */;
 			productName = secp256k1;
 		};
-		E84CA77E2E1D2BF10027D4CC /* zkp */ = {
+		E825C1752E1D9E79003D73C3 /* secp256k1 */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E84CA77B2E1D2BF10027D4CC /* XCRemoteSwiftPackageReference "secp256k1.swift" */;
-			productName = zkp;
+			package = E825C1742E1D9E79003D73C3 /* XCRemoteSwiftPackageReference "secp256k1.swift" */;
+			productName = secp256k1;
 		};
-		E8638AB52E1586A100442EBA /* PersonaInquirySDK2 */ = {
+		E851129F2E1D573E006CA44E /* BigInt */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = E8638AB42E1586A100442EBA /* XCRemoteSwiftPackageReference "inquiry-ios-2" */;
+			package = E851129E2E1D573E006CA44E /* XCRemoteSwiftPackageReference "BigInt" */;
+			productName = BigInt;
+		};
+		E85112A22E1D575C006CA44E /* Toast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E85112A12E1D575C006CA44E /* XCRemoteSwiftPackageReference "toast-swift" */;
+			productName = Toast;
+		};
+		E85112A52E1D57FE006CA44E /* PersonaInquirySDK2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E85112A42E1D57FE006CA44E /* XCRemoteSwiftPackageReference "inquiry-ios-2" */;
 			productName = PersonaInquirySDK2;
+		};
+		E85112A82E1D8C07006CA44E /* CryptoSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E85112A72E1D8C07006CA44E /* XCRemoteSwiftPackageReference "CryptoSwift" */;
+			productName = CryptoSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
