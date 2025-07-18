@@ -33,10 +33,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E80CFB122E2A660D00595D5D /* cryptowallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = cryptowallet.entitlements; sourceTree = "<group>"; };
 		E81E634E2D75A7AB008D1210 /* CryptoWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E81E635E2D75A7AC008D1210 /* CryptoWalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CryptoWalletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E81E63682D75A7AC008D1210 /* CryptoWalletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CryptoWalletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E89444672E157216007A7A9F /* cryptowallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = cryptowallet.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -104,11 +104,11 @@
 		E81E63452D75A7AB008D1210 = {
 			isa = PBXGroup;
 			children = (
-				E89444672E157216007A7A9F /* cryptowallet.entitlements */,
 				E81E63502D75A7AB008D1210 /* CryptoWallet */,
 				E81E63612D75A7AC008D1210 /* CryptoWalletTests */,
 				E81E636B2D75A7AC008D1210 /* CryptoWalletUITests */,
 				E81E634F2D75A7AB008D1210 /* Products */,
+				E80CFB122E2A660D00595D5D /* cryptowallet.entitlements */,
 			);
 			sourceTree = "<group>";
 		};
@@ -435,6 +435,7 @@
 				DEVELOPMENT_TEAM = 828PG3Q6MA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NFCReaderUsageDescription = "This app uses NFC to scan your government‑issued ID securely";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires camera access to verify your identity using government ID.\n";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -466,6 +467,7 @@
 				DEVELOPMENT_TEAM = 828PG3Q6MA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NFCReaderUsageDescription = "This app uses NFC to scan your government‑issued ID securely";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app requires camera access to verify your identity using government ID.\n";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

@@ -1,2 +1,0 @@
-<key>NFCReaderUsageDescription</key>
-<string>This app uses NFC to scan passport data.</string>
