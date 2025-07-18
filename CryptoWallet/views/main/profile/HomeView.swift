@@ -50,28 +50,10 @@ struct HomeView: View {
             VStack {
                 
                 HomeTopView(url: url)
-                    .padding(.top, 50) // beacause of the background gradient on main view
+                    .padding(.top, 8) // beacause of the background gradient on main view
                 
                 HomeBalanceView()
                 
-                
-                SectionButtonView(title: "Your Stock", action: {
-                    Toast.text("Your Stock clicked").show()
-                })
-                
-                
-                ScrollView (.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(coins) { coin in
-                            YourStockItemView(coinName: coin.coinName, coinTicker: coin.coinTicker, coinImage: coin.coinImage, coinPrice: coin.coinPrice, coinGoingUp: coin.coinGoingUp, coinMove: coin.coinMove, coinColors: coin.coinColors)
-                        }
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 10)
-                           
-                    }
-                    
-                }
-                .padding(.horizontal, 15)
                 
                 SectionButtonView(title: "Recent Transactions", action: {
                     Toast.text("Lists clicked").show()
@@ -127,7 +109,7 @@ struct HomeTopView: View {
                                 Text("0x2D3b3A14c7ff8156dF61c85b77392291c0747e87")
                                     .font(.custom(FontUtils.MAIN_BOLD, size: 16))
                                     .truncationMode(.middle)
-                                    .foregroundColor(.white)
+                                    .foregroundColor(.primary.opacity(0.8))
                                     .frame(maxWidth: 160)
                                     .lineLimit(1)
                                 Image(systemName: "doc.on.doc")
@@ -141,11 +123,11 @@ struct HomeTopView: View {
                         
                         Button(action: {}, label: {
                             Image(systemName: "qrcode.viewfinder")
-                                .foregroundColor(.white)
+                                .foregroundColor(.primary.opacity(0.8))
                                 .frame(width: 20, height: 20)
                             Text("Receive")
                                 .font(.custom(FontUtils.MAIN_REGULAR, size: 14))
-                                .foregroundColor(.white)
+                                .foregroundColor(.primary.opacity(0.8))
                         })
                     }
                     .padding(.leading, 15)
@@ -177,6 +159,8 @@ struct HomeTopView: View {
 }
 
 struct HomeBalanceView: View {
+    @StateObject private var wallet = EthereumWallet()
+    
     var body: some View {
         VStack {
             HStack(alignment: .center) {
@@ -185,25 +169,27 @@ struct HomeBalanceView: View {
                         .font(.custom(FontUtils.MAIN_REGULAR, size: 18)).foregroundColor(.gray)
                         .padding(.bottom, 2)
                     
-                    Text("$63,120.80")
-                        .font(.custom(FontUtils.MAIN_BOLD, size: 24)).foregroundColor(.black)
+                    Text("\(wallet.balance) ETH")
+                        .font(.title)
+                        .fontWeight(.medium)
+                        .foregroundStyle(.primary.opacity(0.8))
+                    
+                    if let balance = Double(wallet.balance) {
+                        Text(String(format: "$%.2f USD", balance * 3489.59))
+                            .font(.headline)
+                            .foregroundColor(.black)
+                    } else {
+                        Text("Invalid balance")
+                            .font(.headline)
+                            .foregroundColor(.red)
+                    }
+
+
                 }
                 
                 Spacer()
                 
-                Button(action: {
-                    
-                }, label: {
-                    Image(systemName: "plus")
-                        .resizable()
-                        .foregroundColor(.white)
-                        .scaledToFit()
-                        .frame(width: 15, height: 15)
-                })
-                .frame(width: 40, height: 40)
-                .background(.black)
-                .cornerRadius(30)
-                .shadow(radius: 5)
+                
             }
             .padding(.top, 20)
             .padding(.horizontal, 25)
