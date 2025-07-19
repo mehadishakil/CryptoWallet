@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-@Model
+
 
 
 //// Function to generate the invoice number
@@ -18,7 +18,7 @@ import SwiftData
 //    return letters + numbers
 //}
 
-
+@Model
 final class Invoice {
     enum Status: String, Codable {
         case paid

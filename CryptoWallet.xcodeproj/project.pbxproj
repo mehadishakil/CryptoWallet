@@ -19,6 +19,7 @@
 		E85112A32E1D575C006CA44E /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = E85112A22E1D575C006CA44E /* Toast */; };
 		E85112A62E1D57FE006CA44E /* PersonaInquirySDK2 in Frameworks */ = {isa = PBXBuildFile; productRef = E85112A52E1D57FE006CA44E /* PersonaInquirySDK2 */; };
 		E85112A92E1D8C07006CA44E /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E85112A82E1D8C07006CA44E /* CryptoSwift */; };
+		E85CB5792E2BA8FF00C8A154 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = E85CB5782E2BA8FF00C8A154 /* CodeScanner */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 				E85112A92E1D8C07006CA44E /* CryptoSwift in Frameworks */,
 				E85112A02E1D573E006CA44E /* BigInt in Frameworks */,
 				E85112A62E1D57FE006CA44E /* PersonaInquirySDK2 in Frameworks */,
+				E85CB5792E2BA8FF00C8A154 /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -165,6 +167,7 @@
 				E80388D72E2B80870033FE10 /* Realtime */,
 				E80388D92E2B80870033FE10 /* Storage */,
 				E80388DB2E2B80870033FE10 /* Supabase */,
+				E85CB5782E2BA8FF00C8A154 /* CodeScanner */,
 			);
 			productName = CryptoWallet;
 			productReference = E81E634E2D75A7AB008D1210 /* CryptoWallet.app */;
@@ -255,6 +258,7 @@
 				E85112A72E1D8C07006CA44E /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 				E825C1742E1D9E79003D73C3 /* XCRemoteSwiftPackageReference "secp256k1.swift" */,
 				E80388D02E2B80870033FE10 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				E85CB5772E2BA8FF00C8A154 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E81E634F2D75A7AB008D1210 /* Products */;
@@ -668,6 +672,14 @@
 				minimumVersion = 1.8.5;
 			};
 		};
+		E85CB5772E2BA8FF00C8A154 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -729,6 +741,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E85112A72E1D8C07006CA44E /* XCRemoteSwiftPackageReference "CryptoSwift" */;
 			productName = CryptoSwift;
+		};
+		E85CB5782E2BA8FF00C8A154 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E85CB5772E2BA8FF00C8A154 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

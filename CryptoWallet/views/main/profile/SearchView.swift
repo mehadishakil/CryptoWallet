@@ -94,24 +94,19 @@ struct SearchView: View {
                 }
                 
                 
-                SectionButtonView(title: "My coins", action: {
-                    
-                })
+
                 
                 
                 ScrollView (.vertical, showsIndicators: false) {
                     VStack {
                         ForEach(coins) { coin in
-                            ListItemView(coin: coin)
+                            // ListItemView(coin: coin)
                         }
                         
                     }
                 }
                 .padding(.top, 15)
                 
-                SectionButtonView(title: "My NFTs", action: {
-                    
-                })
                 
                 ScrollView (.vertical, showsIndicators: false) {
                     LazyVGrid(columns: gridLayout, alignment: .center, spacing: 10) {

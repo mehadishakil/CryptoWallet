@@ -146,7 +146,7 @@ struct MainView: View {
 
     var body: some View {
         TabView {
-            ScrollView { HomeView() }
+            HomeView()
                 .tabItem { Label("Home", systemImage: "house") }
 
             ScrollView {
@@ -161,9 +161,9 @@ struct MainView: View {
             .tabItem { Label("Verification", systemImage: "touchid") }
 
             ScrollView { ScanView() }
-                .tabItem { Label("Scan", systemImage: "qrcode.viewfinder") }
+                .tabItem { Label("Transfer", systemImage: "arrow.up.arrow.down") }
             
-            ScrollView { InvoiceScreenView() }
+            InvoiceScreenView()
                 .tabItem { Label("Invoice", systemImage: "document") }
 
             SettingsScreen()
