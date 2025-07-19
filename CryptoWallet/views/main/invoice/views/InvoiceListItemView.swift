@@ -22,9 +22,9 @@ struct InvoiceListItemView: View {
                         .font(.caption)
                         .foregroundStyle(.gray)
 
-//                    + Text(DateFormatter.sharedDateTimeFormatter.string(from: invoice.invoiceDate))
-//                        .font(.caption)
-//                        .foregroundStyle(.gray)
+                    + Text(DateFormatter.sharedDateTimeFormatter.string(from: invoice.invoiceDate))
+                        .font(.caption)
+                        .foregroundStyle(.gray)
                 }
                 Spacer()
                 Menu {
@@ -73,3 +73,13 @@ struct InvoiceListItemView: View {
     }
 }
 
+
+extension DateFormatter {
+    static let sharedDateTimeFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        formatter.locale = Locale.current
+        return formatter
+    }()
+}

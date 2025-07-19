@@ -271,7 +271,7 @@ struct QRScannerView: View {
 
 // Send Transaction View
 struct SendTransactionView: View {
-    let recipientAddress: String
+    @State var recipientAddress: String
     @State private var amount: String = ""
     @State private var note: String = ""
     @State private var attachInvoice = false
@@ -287,7 +287,7 @@ struct SendTransactionView: View {
                         Text("Recipient Address:")
                             .font(.custom(FontUtils.MAIN_BOLD, size: 16))
                         
-                        Text(recipientAddress)
+                        TextField("Wallet address", text: $recipientAddress)
                             .font(.custom(FontUtils.MAIN_REGULAR, size: 14))
                             .padding()
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -295,28 +295,18 @@ struct SendTransactionView: View {
                             .cornerRadius(10)
                     }
                     
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Amount:")
-                            .font(.custom(FontUtils.MAIN_BOLD, size: 16))
-                        
-                        TextField("0.00", text: $amount)
-                            .keyboardType(.decimalPad)
-                            .font(.custom(FontUtils.MAIN_REGULAR, size: 18))
-                            .padding()
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(10)
-                    }
+                    FloatingLabelTextField(amount: $amount)
                     
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Note (Optional):")
-                            .font(.custom(FontUtils.MAIN_BOLD, size: 16))
-                        
-                        TextField("Add a note...", text: $note)
-                            .font(.custom(FontUtils.MAIN_REGULAR, size: 16))
-                            .padding()
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(10)
-                    }
+//                    VStack(alignment: .leading, spacing: 10) {
+//                        Text("Note (Optional):")
+//                            .font(.custom(FontUtils.MAIN_BOLD, size: 16))
+//                        
+//                        TextField("Add a note...", text: $note)
+//                            .font(.custom(FontUtils.MAIN_REGULAR, size: 16))
+//                            .padding()
+//                            .background(Color.gray.opacity(0.1))
+//                            .cornerRadius(10)
+//                    }
                     
                     VStack(alignment: .leading, spacing: 10) {
                         Toggle("Attach Invoice/PDF", isOn: $attachInvoice)
@@ -365,6 +355,51 @@ struct SendTransactionView: View {
         }
     }
 }
+
+struct FloatingLabelTextField: View {
+    @Binding var amount: String
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Amount:")
+                .font(.custom(FontUtils.MAIN_BOLD, size: 16))
+                .padding(.bottom, 4)
+
+            ZStack(alignment: .leading) {
+                // Floating label
+                if isFocused || !amount.isEmpty {
+                    Text("ETH")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                        .padding(.horizontal, 6)
+                        .background(Color.gray.opacity(0.1))
+                        .offset(x: 10, y: -28)
+                        .zIndex(1)
+                }
+
+                HStack {
+                    TextField("0.00", text: $amount)
+                        .keyboardType(.decimalPad)
+                        .font(.custom(FontUtils.MAIN_REGULAR, size: 18))
+                        .focused($isFocused)
+                    
+                    if amount.isEmpty && !isFocused {
+                        Text("ETH")
+                            .font(.custom(FontUtils.MAIN_REGULAR, size: 12))
+                            .foregroundColor(.gray)
+                    }
+                }
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
+            }
+            .animation(.easeInOut(duration: 0.2), value: isFocused || !amount.isEmpty)
+        }
+    }
+}
+
+
 
 // Receive Transaction View
 struct ReceiveTransactionView: View {

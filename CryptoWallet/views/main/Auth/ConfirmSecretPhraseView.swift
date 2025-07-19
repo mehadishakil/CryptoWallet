@@ -275,3 +275,7 @@ struct WordView: View {
         }
     }
 }
+
+#Preview(body: {
+    ConfirmSecretPhraseView()
+})
