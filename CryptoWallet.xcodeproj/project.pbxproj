@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E80388D22E2B80870033FE10 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = E80388D12E2B80870033FE10 /* Auth */; };
+		E80388D42E2B80870033FE10 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = E80388D32E2B80870033FE10 /* Functions */; };
+		E80388D62E2B80870033FE10 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = E80388D52E2B80870033FE10 /* PostgREST */; };
+		E80388D82E2B80870033FE10 /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = E80388D72E2B80870033FE10 /* Realtime */; };
+		E80388DA2E2B80870033FE10 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = E80388D92E2B80870033FE10 /* Storage */; };
+		E80388DC2E2B80870033FE10 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = E80388DB2E2B80870033FE10 /* Supabase */; };
 		E825C16A2E1D9783003D73C3 /* secp256k1 in Frameworks */ = {isa = PBXBuildFile; productRef = E825C1692E1D9783003D73C3 /* secp256k1 */; };
 		E825C1762E1D9E79003D73C3 /* secp256k1 in Frameworks */ = {isa = PBXBuildFile; productRef = E825C1752E1D9E79003D73C3 /* secp256k1 */; };
 		E85112A02E1D573E006CA44E /* BigInt in Frameworks */ = {isa = PBXBuildFile; productRef = E851129F2E1D573E006CA44E /* BigInt */; };
@@ -77,7 +83,13 @@
 			files = (
 				E85112A32E1D575C006CA44E /* Toast in Frameworks */,
 				E825C1762E1D9E79003D73C3 /* secp256k1 in Frameworks */,
+				E80388DA2E2B80870033FE10 /* Storage in Frameworks */,
+				E80388D42E2B80870033FE10 /* Functions in Frameworks */,
+				E80388D82E2B80870033FE10 /* Realtime in Frameworks */,
+				E80388D62E2B80870033FE10 /* PostgREST in Frameworks */,
 				E825C16A2E1D9783003D73C3 /* secp256k1 in Frameworks */,
+				E80388D22E2B80870033FE10 /* Auth in Frameworks */,
+				E80388DC2E2B80870033FE10 /* Supabase in Frameworks */,
 				E85112A92E1D8C07006CA44E /* CryptoSwift in Frameworks */,
 				E85112A02E1D573E006CA44E /* BigInt in Frameworks */,
 				E85112A62E1D57FE006CA44E /* PersonaInquirySDK2 in Frameworks */,
@@ -147,6 +159,12 @@
 				E85112A82E1D8C07006CA44E /* CryptoSwift */,
 				E825C1692E1D9783003D73C3 /* secp256k1 */,
 				E825C1752E1D9E79003D73C3 /* secp256k1 */,
+				E80388D12E2B80870033FE10 /* Auth */,
+				E80388D32E2B80870033FE10 /* Functions */,
+				E80388D52E2B80870033FE10 /* PostgREST */,
+				E80388D72E2B80870033FE10 /* Realtime */,
+				E80388D92E2B80870033FE10 /* Storage */,
+				E80388DB2E2B80870033FE10 /* Supabase */,
 			);
 			productName = CryptoWallet;
 			productReference = E81E634E2D75A7AB008D1210 /* CryptoWallet.app */;
@@ -236,6 +254,7 @@
 				E85112A42E1D57FE006CA44E /* XCRemoteSwiftPackageReference "inquiry-ios-2" */,
 				E85112A72E1D8C07006CA44E /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 				E825C1742E1D9E79003D73C3 /* XCRemoteSwiftPackageReference "secp256k1.swift" */,
+				E80388D02E2B80870033FE10 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E81E634F2D75A7AB008D1210 /* Products */;
@@ -601,6 +620,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E80388D02E2B80870033FE10 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
 		E825C1742E1D9E79003D73C3 /* XCRemoteSwiftPackageReference "secp256k1.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Boilertalk/secp256k1.swift.git";
@@ -644,6 +671,36 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E80388D12E2B80870033FE10 /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E80388D02E2B80870033FE10 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		E80388D32E2B80870033FE10 /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E80388D02E2B80870033FE10 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		E80388D52E2B80870033FE10 /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E80388D02E2B80870033FE10 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		E80388D72E2B80870033FE10 /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E80388D02E2B80870033FE10 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		E80388D92E2B80870033FE10 /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E80388D02E2B80870033FE10 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		E80388DB2E2B80870033FE10 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E80388D02E2B80870033FE10 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
 		E825C1692E1D9783003D73C3 /* secp256k1 */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = secp256k1;

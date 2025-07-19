@@ -145,64 +145,94 @@ struct MainView: View {
     @State private var showNFCScanInstructionView = false
 
     var body: some View {
-        NavigationStack { // Use NavigationStack for iOS 16+ or NavigationView for older versions
-            ZStack(alignment: .bottom) {
+        TabView {
+            ScrollView { HomeView() }
+                .tabItem { Label("Home", systemImage: "house") }
 
-                Color(.white)
-                    .edgesIgnoringSafeArea(.all)
-
-                ZStack {
-                    switch selectedIndex {
-                    case 0:
-                        ScrollView { HomeView() } // Placeholder for HomeView
-                    case 1:
-                        ScrollView {
-                            IdentityVerificationView()
-                                .environmentObject(verificationManager) // Pass the environment object
-                                .onChange(of: verificationManager.verificationStatus) { status in
-                                    if status == .completed {
-                                        showVerifyDocumentView = true // Trigger the next step
-                                    }
-                                }
+            ScrollView {
+                IdentityVerificationView()
+                    .environmentObject(verificationManager) // Pass the environment object
+                    .onChange(of: verificationManager.verificationStatus) { status in
+                        if status == .completed {
+                            showVerifyDocumentView = true // Trigger the next step
                         }
-                    case 2:
-                        ScrollView { ScanView() } // Placeholder for ScanView
-                    case 3:
-                        WalletView() // Placeholder for WalletView
-
-                    default:
-                        RadialGradient(gradient: Gradient(colors: [Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3")]), center: .topTrailing, startRadius: 100, endRadius: 800)
-                            .frame(height: 550)
-                            .edgesIgnoringSafeArea(.top)
-
-                        ProfileView() // Placeholder for ProfileView
-                            .padding(.top, 50)
                     }
-                }
-                .edgesIgnoringSafeArea(.top)
+            }
+            .tabItem { Label("Verification", systemImage: "touchid") }
 
-                BottomNavigationView(selectedIndex: $selectedIndex, verificationStatus: verificationManager.verificationStatus)
-                    .edgesIgnoringSafeArea(.bottom)
-            }
-            .navigationBarBackButtonHidden()
-            .preferredColorScheme(.dark)
-            .onReceive(NotificationCenter.default.publisher(for: .verificationCompleted)) { _ in
-                selectedIndex = 0 // Navigate back to home after successful verification
-            }
-            // Navigation Destinations
-            .navigationDestination(isPresented: $showVerifyDocumentView) {
-                VerifyDocumentView(showCountrySelectionView: $showCountrySelectionView)
-            }
-            .navigationDestination(isPresented: $showCountrySelectionView) {
-                CountrySelectionView(showUploadIDPhotoView: $showUploadIDPhotoView)
-            }
-            .navigationDestination(isPresented: $showUploadIDPhotoView) {
-                UploadIDPhotoView(showNFCScanInstructionView: $showNFCScanInstructionView)
-            }
-            .navigationDestination(isPresented: $showNFCScanInstructionView) {
-                NFCScanInstructionView()
-            }
+            ScrollView { ScanView() }
+                .tabItem { Label("Scan", systemImage: "qrcode.viewfinder") }
+            
+            ScrollView { InvoiceScreenView() }
+                .tabItem { Label("Invoice", systemImage: "document") }
+
+            SettingsScreen()
+                .tabItem { Label("Settings", systemImage: "gearshape.fill") }
         }
+        .background(.ultraThinMaterial)
+        .edgesIgnoringSafeArea(.bottom)
+        .tint(.primary)
+
+        
+//        NavigationStack { // Use NavigationStack for iOS 16+ or NavigationView for older versions
+//            ZStack(alignment: .bottom) {
+//
+//                Color(.white)
+//                    .edgesIgnoringSafeArea(.all)
+//
+//                ZStack {
+//                    switch selectedIndex {
+//                    case 0:
+//                        ScrollView { HomeView() } // Placeholder for HomeView
+//                    case 1:
+//                        ScrollView {
+//                            IdentityVerificationView()
+//                                .environmentObject(verificationManager) // Pass the environment object
+//                                .onChange(of: verificationManager.verificationStatus) { status in
+//                                    if status == .completed {
+//                                        showVerifyDocumentView = true // Trigger the next step
+//                                    }
+//                                }
+//                        }
+//                    case 2:
+//                        ScrollView { ScanView() } // Placeholder for ScanView
+//                    case 3:
+//                        InvoiceScreenView()
+//                        //WalletView() // Placeholder for WalletView
+//
+//                    default:
+//                        RadialGradient(gradient: Gradient(colors: [Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3")]), center: .topTrailing, startRadius: 100, endRadius: 800)
+//                            .frame(height: 550)
+//                            .edgesIgnoringSafeArea(.top)
+//
+//                        SettingsScreen() // Placeholder for ProfileView
+//                            .padding(.top, 50)
+//                    }
+//                }
+//                .edgesIgnoringSafeArea(.top)
+//
+//                BottomNavigationView(selectedIndex: $selectedIndex, verificationStatus: verificationManager.verificationStatus)
+//                    .edgesIgnoringSafeArea(.bottom)
+//            }
+//            .navigationBarBackButtonHidden()
+//            .preferredColorScheme(.dark)
+//            .onReceive(NotificationCenter.default.publisher(for: .verificationCompleted)) { _ in
+//                selectedIndex = 0 // Navigate back to home after successful verification
+//            }
+//            // Navigation Destinations
+//            .navigationDestination(isPresented: $showVerifyDocumentView) {
+//                VerifyDocumentView(showCountrySelectionView: $showCountrySelectionView)
+//            }
+//            .navigationDestination(isPresented: $showCountrySelectionView) {
+//                CountrySelectionView(showUploadIDPhotoView: $showUploadIDPhotoView)
+//            }
+//            .navigationDestination(isPresented: $showUploadIDPhotoView) {
+//                UploadIDPhotoView(showNFCScanInstructionView: $showNFCScanInstructionView)
+//            }
+//            .navigationDestination(isPresented: $showNFCScanInstructionView) {
+//                NFCScanInstructionView()
+//            }
+//        }
     }
 }
 
@@ -227,10 +257,6 @@ struct IdentityVerificationView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                // Background gradient to match your app's style
-                RoundedRectangle(cornerRadius: 0, style: .continuous)
-                    .fill(Color.primary)
-
                 VStack(spacing: 30) {
                     // Header
                     VStack(spacing: 16) {
