@@ -396,7 +396,7 @@ class EthereumWallet: ObservableObject {
     private var privateKey: Data?
     private let rpcURL = "https://sepolia.infura.io/v3/5c13cec41a9d4475bdd2c744a636a822"
     
-    private static let secpContext: OpaquePointer = {
+    static let secpContext: OpaquePointer = {
         secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY))
     }()
     
@@ -788,3 +788,229 @@ extension String {
         hasPrefix("0x") ? String(dropFirst(2)) : self
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import Foundation
+import CryptoSwift
+import BigInt
+import secp256k1
+
+// MARK: - BIP39 → Seed
+func seedFrom(mnemonic: String, passphrase: String = "") -> Data {
+    // Salt is "mnemonic" + passphrase, N = 2048 rounds, HMAC‑SHA512
+    let salt = "mnemonic" + passphrase
+    let seed = try! PKCS5.PBKDF2(
+        password: Array(mnemonic.utf8),
+        salt: Array(salt.utf8),
+        iterations: 2048,
+        keyLength: 64,
+        variant: .sha2(.sha512)
+    ).calculate()
+    return Data(seed)
+}
+
+// MARK: - Minimal BIP32
+struct HDKey {
+    let privateKey: Data
+    let chainCode: Data
+}
+
+func hmacSHA512(key: Data, data: Data) -> Data {
+    let mac = try! HMAC(key: Array(key), variant: .sha2(.sha512))
+        .authenticate(Array(data))
+    return Data(mac)
+}
+
+func deriveMasterKey(from seed: Data) -> HDKey {
+    let I = hmacSHA512(key: "Bitcoin seed".data(using: .ascii)!, data: seed)
+    let priv = I[0..<32]
+    let chain = I[32..<64]
+    return HDKey(privateKey: priv, chainCode: chain)
+}
+
+extension Data {
+    /// Left‑pad (big‑endian) this data to the given length with leading zeroes.
+    func leftPadded(to length: Int) -> Data {
+        if count < length {
+            return Data(repeating: 0, count: length - count) + self
+        } else {
+            return suffix(length)
+        }
+    }
+}
+
+
+func deriveChildKey(parent: HDKey, index: UInt32, hardened: Bool) -> HDKey {
+    // index, with the hardened bit if requested
+    let i = hardened ? index + 0x8000_0000 : index
+    var data = Data()
+
+    if hardened {
+        // hardened: data = 0x00 || parentPrivKey || indexBE
+        data += [0x00]
+        data += parent.privateKey
+    } else {
+        // non‑hardened: data = parentPubKey || indexBE
+        // 1) create secp256k1_pubkey from parent.privateKey
+        var secpPub = secp256k1_pubkey()
+        let createOK = parent.privateKey.withUnsafeBytes { pkPtr in
+            secp256k1_ec_pubkey_create(
+                EthereumWallet.secpContext,
+                &secpPub,
+                pkPtr.bindMemory(to: UInt8.self).baseAddress!
+            )
+        }
+        guard createOK == 1 else {
+            fatalError("Failed to derive public key for non‑hardened child")
+        }
+        // 2) serialize to compressed form (33 bytes)
+        var serialized = [UInt8](repeating: 0, count: 33)
+        var outLen: size_t = 33
+        secp256k1_ec_pubkey_serialize(
+            EthereumWallet.secpContext,
+            &serialized,
+            &outLen,
+            &secpPub,
+            UInt32(SECP256K1_EC_COMPRESSED)
+        )
+        data += serialized  // parentPubKey
+    }
+
+    // append index big‑endian
+    var idx_BE = i.bigEndian
+    withUnsafeBytes(of: &idx_BE) { idxPtr in
+        data += Data(idxPtr)
+    }
+
+    // HMAC‑SHA512 with parent.chainCode
+    let I = hmacSHA512(key: parent.chainCode, data: data)
+    let IL = I[0..<32]    // left 32
+    let IR = I[32..<64]   // right 32
+
+    // parse IL as BigUInt, add to parentPrivKey (mod curve order)
+    let curveN = BigUInt("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141", radix: 16)!
+    let parseIL = BigUInt(Data(IL))
+    let parentK = BigUInt(parent.privateKey)
+    let childK = (parseIL + parentK) % curveN
+
+    let rawChild = childK.serialize()
+    let padded = rawChild.leftPadded(to: 32)
+
+    return HDKey(
+        privateKey: padded,
+        chainCode: Data(IR)
+    )
+}
+
+
+// MARK: - Full derive to m/44'/60'/0'/0/0
+func deriveEthPrivateKey(from seed: Data) -> Data {
+    let master = deriveMasterKey(from: seed)
+    // m/44'
+    let purpose44  = deriveChildKey(parent: master, index: 44, hardened: true)
+    // /60'
+    let coin60    = deriveChildKey(parent: purpose44, index: 60, hardened: true)
+    // /0'
+    let account0  = deriveChildKey(parent: coin60, index: 0, hardened: true)
+    // /0
+    let external = deriveChildKey(parent: account0, index: 0, hardened: false) // you'd need pub for non‑hardened
+    // /0
+    let address0 = deriveChildKey(parent: external, index: 0, hardened: false)
+    return address0.privateKey
+}
+
+// MARK: - Integrate into your Wallet
+extension EthereumWallet {
+    /// Create a wallet by mnemonic phrase
+    func createWallet(from mnemonic: String, passphrase: String = "") {
+        let seed = seedFrom(mnemonic: mnemonic, passphrase: passphrase)
+        let privKey = deriveEthPrivateKey(from: seed)
+        self.privateKey = privKey
+        self.privateKeyHex = privKey.toHexString()
+        self.address = generateAddress(from: privKey)
+    }
+    
+    
+    func importWallet(from mnemonic: String, passphrase: String = "") throws {
+        let words = mnemonic
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+            .components(separatedBy: .whitespaces)
+            .filter { !$0.isEmpty }
+
+        guard words.count == 12 || words.count == 24 else {
+            throw WalletImportError.invalidWordCount
+        }
+
+        guard Bip39.basicValidate(mnemonic: words) else {
+            throw WalletImportError.invalidWordList
+        }
+
+        // If you have checksum validation:
+        // guard Bip39.checksumIsValid(mnemonic: words) else {
+        //     throw WalletImportError.checksumFailed
+        // }
+
+        let seed = seedFrom(mnemonic: words.joined(separator: " "), passphrase: passphrase)
+        let priv = deriveEthPrivateKey(from: seed)
+        let addr = generateAddress(from: priv)
+
+        DispatchQueue.main.async {
+            self.privateKey = priv
+            self.privateKeyHex = priv.toHexString()
+            self.address = addr
+        }
+    }
+
+}
+
+
+
+
+
+enum WalletImportError: Error {
+    case invalidWordCount
+    case invalidWordList
+    case checksumFailed
+    case unknown(Error)
+}
+
+extension WalletImportError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .invalidWordCount:
+            return "Seed phrase must contain exactly 12 or 24 words."
+        case .invalidWordList:
+            return "One or more words are not in the official BIP‑39 list."
+        case .checksumFailed:
+            return "The seed phrase checksum is invalid."
+        case .unknown(let err):
+            return err.localizedDescription
+        }
+    }
+}
+
+

@@ -80,19 +80,7 @@ struct FaceIdFingerScanView: View {
                     .padding(.top, -10)
             }
             .padding(20)
-        }
-        .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                
-                Image(systemName: "arrow.backward")
-                    .foregroundColor(.gray)
-                    .font(.system(size: 25))
-                    .onTapGesture {
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
-            }
-        }
+        }        
     }
 }
 

@@ -5,7 +5,7 @@ struct WelcomeView: View {
     
     @State private var isNewWallet = false
     @State private var isHasWallet = false
-
+    @StateObject private var viewModel = IdentityVerificationViewModel()
     
     var body: some View {
         NavigationView {
@@ -55,12 +55,15 @@ struct WelcomeView: View {
                                                                       isActive: $isNewWallet,
                                                                       label: {  })
                         
-                        NavigationLink(destination: MainView(),
+                        NavigationLink(destination: FetchSeedPhraseView(),
                                        isActive: $isHasWallet,
                                                                       label: {  })
                         
                         
-                        Button { isNewWallet = true } label: {
+                        Button {
+                            // isNewWallet = true
+                            viewModel.startVerification()
+                        } label: {
                                            Text("Create a New Wallet")
                                 .font(.custom(FontUtils.MAIN_REGULAR, size: 18))
                                                  .foregroundColor(.white)
@@ -73,7 +76,9 @@ struct WelcomeView: View {
                                          .cornerRadius(30)
                         
                         Button {
+                            print("Wordlist count:", Bip39.wordList.count)
                             isHasWallet = true
+                            
                         } label: {
                                            Text("Already Have a Wallet")
                                 .font(.custom(FontUtils.MAIN_MEDIUM, size: 18))

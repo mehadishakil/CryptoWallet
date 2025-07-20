@@ -33,7 +33,7 @@ struct SecretPhraseView: View {
                         .frame(height: 10 / UIScreen.main.scale)
                     
                     NavigationLink(
-                        destination: ConfirmSecretPhraseView(words: words ?? []),
+                        destination: ConfirmSecretPhraseView(),
                         isActive: $isReadyToConfirm,
                         label: { EmptyView() }
                     )
@@ -111,7 +111,7 @@ struct WordsContentView: View {
                         )
                     }
                 }
-                .padding(.horizontal, 5)
+                .padding(6)
             }
             .padding(.top, 30)
         } else {
@@ -125,14 +125,12 @@ struct WordCardView: View {
     let word: String
     
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 4) {
             // Serial number with background
             Text("\(number).")
                 .font(.custom(FontUtils.MAIN_BOLD, size: 12))
                 .foregroundColor(.primary)
                 .frame(width: 24, height: 24)
-            
-            
             
             // Word text
             Text(word)
@@ -143,22 +141,15 @@ struct WordCardView: View {
             
             Spacer()
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
-        .frame(minHeight: 44)
+        .padding(.horizontal, 6)
+        .padding(.vertical, 6)
+        .frame(minHeight: 36)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color(.systemGray6))
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.white)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(
-                            LinearGradient(
-                                gradient: Gradient(colors: [Color("#7A17D7").opacity(0.3), Color("#ED74CD").opacity(0.3)]),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            ),
-                            lineWidth: 1.5
-                        )
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(.gray, lineWidth: 1)
                 )
         )
         .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)

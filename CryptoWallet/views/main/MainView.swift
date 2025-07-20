@@ -141,6 +141,7 @@ struct MainView: View {
     @State private var showCountrySelectionView = false
     @State private var showUploadIDPhotoView = false
     @State private var showNFCScanInstructionView = false
+    @EnvironmentObject private var authController: AuthController
 
     var body: some View {
         TabView {
@@ -158,8 +159,8 @@ struct MainView: View {
 //            }
 //            .tabItem { Label("Verification", systemImage: "touchid") }
             
-            SecretPhraseView()
-                .tabItem { Label("Verification", systemImage: "touchid") }
+//            SecretPhraseView()
+//                .tabItem { Label("Verification", systemImage: "touchid") }
 
             ScrollView { ScanView() }
                 .tabItem { Label("Transfer", systemImage: "arrow.up.arrow.down") }
@@ -173,6 +174,12 @@ struct MainView: View {
         .background(.ultraThinMaterial)
         .edgesIgnoringSafeArea(.bottom)
         .tint(.primary)
+        .navigationBarBackButtonHidden()
+//        .onAppear {
+//            if authController.authState =! .authenticated {
+//                healthViewModel.setUserId(uid)
+//            }
+//        }
     }
 }
 
@@ -378,6 +385,10 @@ class IdentityVerificationViewModel: ObservableObject, InquiryDelegate {
                 self.currentInquiry?.start(from: topController)
             }
         }
+
+        VerifyDocumentView(showCountrySelectionView: .constant(true))
+        
+        SecretPhraseView()
     }
 
     func resetStatus() {
