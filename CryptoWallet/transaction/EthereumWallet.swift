@@ -396,6 +396,12 @@ class EthereumWallet: ObservableObject {
     private var privateKey: Data?
     private let rpcURL = "https://sepolia.infura.io/v3/5c13cec41a9d4475bdd2c744a636a822"
     
+    init() {
+            if let savedAddress = UserDefaults.standard.string(forKey: "walletAddress") {
+                self.address = savedAddress
+            }
+        }
+    
     static let secpContext: OpaquePointer = {
         secp256k1_context_create(UInt32(SECP256K1_CONTEXT_SIGN | SECP256K1_CONTEXT_VERIFY))
     }()
@@ -951,6 +957,12 @@ extension EthereumWallet {
         self.privateKey = privKey
         self.privateKeyHex = privKey.toHexString()
         self.address = generateAddress(from: privKey)
+        print("address: \(address)")
+        print("private key: \(privateKey)")
+        print("private key hex: \(privateKeyHex)")
+        UserDefaults.standard.set(self.privateKey, forKey: "privateKey")
+        UserDefaults.standard.set(self.privateKeyHex, forKey: "privateKeyHex")
+        UserDefaults.standard.set(self.address, forKey: "walletAddress")
     }
     
     
@@ -977,11 +989,18 @@ extension EthereumWallet {
         let seed = seedFrom(mnemonic: words.joined(separator: " "), passphrase: passphrase)
         let priv = deriveEthPrivateKey(from: seed)
         let addr = generateAddress(from: priv)
-
+        
         DispatchQueue.main.async {
             self.privateKey = priv
             self.privateKeyHex = priv.toHexString()
             self.address = addr
+            
+            print("address: \(addr)")
+            print("private key: \(priv)")
+            print("private key hex: \(priv.toHexString())")
+            UserDefaults.standard.set(self.privateKey, forKey: "privateKey")
+            UserDefaults.standard.set(self.privateKeyHex, forKey: "privateKeyHex")
+            UserDefaults.standard.set(self.address, forKey: "walletAddress")
         }
     }
 

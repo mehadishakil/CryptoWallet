@@ -10,7 +10,7 @@ struct AboutView: View {
                 HStack {
                     Text("App Name")
                     Spacer()
-                    Text("IELTSpeak")
+                    Text("CryptoWallet")
                         .foregroundColor(.secondary)
                 }
 
@@ -41,7 +41,7 @@ struct AboutView: View {
             }
 
             Section {
-                Text("IELTSpeak helps you prepare for the IELTS speaking exam with mock interviews, voice interaction, and AI-based feedback. Improve your fluency, vocabulary, and confidence step by step.")
+                Text("App descriptions...")
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }

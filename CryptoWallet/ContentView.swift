@@ -10,7 +10,7 @@ struct ContentView: View {
                         ProgressView("Checking authentication…")
                             .progressViewStyle(CircularProgressViewStyle())
                     case .unauthenticated:
-                        WelcomeView()
+                        MainView()
                     case .authenticated:
                         MainView()
                     case .error(let err):

@@ -33,7 +33,7 @@ struct SecretPhraseView: View {
                         .frame(height: 10 / UIScreen.main.scale)
                     
                     NavigationLink(
-                        destination: ConfirmSecretPhraseView(),
+                        destination: ConfirmSecretPhraseView(words: words),
                         isActive: $isReadyToConfirm,
                         label: { EmptyView() }
                     )
@@ -43,11 +43,6 @@ struct SecretPhraseView: View {
             }
         }
         .navigationBarBackButtonHidden()
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                BackButton(presentationMode: presentationMode)
-            }
-        }
         .task {
             do {
                 self.words = try await WordGeneratorManager.getSecretWords()

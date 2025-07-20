@@ -12,7 +12,7 @@ struct HomeView_Previews: PreviewProvider {
 
 struct HomeView: View {
     
-    private let url = "https://pyxis.nymag.com/v1/imgs/654/1f1/08de774c11d89cb3f4ecf600a33e9c8283-24-keanu-reeves.rsquare.w700.jpg"
+    private let url = "https://scontent.fdac138-2.fna.fbcdn.net/v/t39.30808-6/475995859_1154020176416021_1382538768621471338_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFJLrlRY_Kx1uYSimzy2GK9FMWRBwz2XQ4UxZEHDPZdDo2OXAsy1lo2WOIvIS9hR5RxFODkGex-wLI2ceGsa21w&_nc_ohc=zyEHJqRp1gQQ7kNvwGRaKCq&_nc_oc=AdkXQtnN5cdoKC501Cz0vLPbejHO_BGi-40BWJC6t31rO8YqRh3VjEWIdvTXSbnB2CE&_nc_zt=23&_nc_ht=scontent.fdac138-2.fna&_nc_gid=gxlkAeEBl-fSMf7WnO-xLQ&oh=00_AfRfjQC48sbuVqe7Xd9j_1mqQBHkg9Lp5zZW0c0lIDq2TQ&oe=6882F1C1"
     
     @State var selectedList: String = "All"
     
@@ -98,24 +98,31 @@ struct HomeView: View {
             .navigationBarHidden(true)
             .background(Color(.systemGroupedBackground)).edgesIgnoringSafeArea(.all)
         }
+        .navigationBarBackButtonHidden()
     }
 }
 
 struct HomeTopView: View {
     let url: String
-    private let walletAddress = "0x2D3b3A14c7ff8156dF61c85b77392291c0747e87"
+    @AppStorage("walletAddress") private var walletAddress: String = ""
     @State private var showReceiveSheet = false
     
     var body: some View {
         HStack(spacing: 16) {
             // Profile Image
             AsyncImage(url: URL(string: url)) { image in
-                image.resizable()
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 65, height: 65)
+                    .clipShape(RoundedRectangle(cornerRadius: 40))
             } placeholder: {
                 Color.gray
+                    .frame(width: 65, height: 65)
+                    .clipShape(RoundedRectangle(cornerRadius: 40))
             }
-            .frame(width: 65, height: 65)
-            .clipShape(RoundedRectangle(cornerRadius: 40))
+
+            
             
             VStack(alignment: .leading, spacing: 6) {
                 HStack {

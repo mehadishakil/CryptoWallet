@@ -91,7 +91,7 @@ struct ScanView: View {
     @State private var showingSendTransaction = false
     @State private var showingReceiveTransaction = false
     @State private var walletBalance: Double = 1250.75 // Mock balance
-    @State private var myWalletAddress = "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh" // Mock address
+    @AppStorage("walletAddress") private var walletAddress: String = ""
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -240,7 +240,7 @@ struct ScanView: View {
             SendTransactionView(recipientAddress: address)
         }
         .sheet(isPresented: $showingReceiveTransaction) {
-            ReceiveTransactionView(myAddress: myWalletAddress)
+            ReceiveTransactionView(myAddress: walletAddress)
         }
     }
 }

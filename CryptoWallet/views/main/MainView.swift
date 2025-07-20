@@ -161,6 +161,9 @@ struct MainView: View {
             
 //            SecretPhraseView()
 //                .tabItem { Label("Verification", systemImage: "touchid") }
+            
+//            NFCScanInstructionView()
+//                .tabItem { Label("Verification", systemImage: "touchid") }
 
             ScrollView { ScanView() }
                 .tabItem { Label("Transfer", systemImage: "arrow.up.arrow.down") }
@@ -183,7 +186,6 @@ struct MainView: View {
     }
 }
 
-// MARK: - Verification Manager
 class VerificationManager: ObservableObject {
     @Published var verificationStatus: VerificationStatus = .notStarted
 
@@ -196,7 +198,6 @@ class VerificationManager: ObservableObject {
     }
 }
 
-// MARK: - Identity Verification View (Integrated)
 struct IdentityVerificationView: View {
     @StateObject private var viewModel = IdentityVerificationViewModel()
     @EnvironmentObject var verificationManager: VerificationManager
@@ -341,7 +342,6 @@ struct IdentityVerificationView: View {
     }
 }
 
-// MARK: - Enhanced View Model
 class IdentityVerificationViewModel: ObservableObject, InquiryDelegate {
 
     // MARK: - Published Properties
@@ -352,6 +352,9 @@ class IdentityVerificationViewModel: ObservableObject, InquiryDelegate {
     @Published var alertMessage = ""
     @Published var alertType: AlertType = .success
     @Published var verificationState: VerificationState = .notStarted
+    @Published var verificationCompleted: Bool = false
+        @Published var shouldShowNFCScan: Bool = false
+        @Published var shouldShowSecretPhrase: Bool = false
 
     // MARK: - Private Properties
     private let templateId = "itmpl_ZVr1RAzzvL5uA578dWLuR3e1dXkx" // Replace with your actual template ID
@@ -361,8 +364,15 @@ class IdentityVerificationViewModel: ObservableObject, InquiryDelegate {
         case notStarted, inProgress, completed, failed, underReview
     }
 
+    func nfcScanFinished() {
+            // Call this method when NFC scan is done
+            self.shouldShowNFCScan = false // Hide NFC Scan
+            self.shouldShowSecretPhrase = true // Then navigate to SecretPhraseView
+            print("NFC Scan finished. Ready to show SecretPhraseView.")
+        }
+    
     // MARK: - Public Methods
-    func startVerification() {
+    func startVerification() -> Bool {
         isLoading = true
         verificationState = .inProgress
         statusMessage = "Preparing verification..."
@@ -385,10 +395,14 @@ class IdentityVerificationViewModel: ObservableObject, InquiryDelegate {
                 self.currentInquiry?.start(from: topController)
             }
         }
-
-        VerifyDocumentView(showCountrySelectionView: .constant(true))
         
-        SecretPhraseView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+
+                    self.shouldShowNFCScan = true // First navigate to NFCScanInstructionView
+                    print("Verification completed. Ready to show NFCScanInstructionView.")
+                }
+        shouldShowNFCScan = true
+        return true
     }
 
     func resetStatus() {
@@ -496,7 +510,6 @@ class IdentityVerificationViewModel: ObservableObject, InquiryDelegate {
     }
 }
 
-// MARK: - Status View and Supporting Types
 struct StatusView: View {
     let message: String
     let type: StatusType
@@ -545,7 +558,6 @@ enum AlertType {
     case success, failure, review, error
 }
 
-// MARK: - Notification Extension
 extension Notification.Name {
     static let verificationCompleted = Notification.Name("verificationCompleted")
 }
@@ -556,15 +568,6 @@ struct MainView_Previews: PreviewProvider {
     }
 }
 
-
-
-
-
-
-
-
-
-// MARK: - Updated Bottom Navigation
 struct BottomNavigationView: View {
     
     @Binding var selectedIndex: Int

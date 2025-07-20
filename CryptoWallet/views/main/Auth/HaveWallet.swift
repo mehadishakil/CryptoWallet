@@ -13,14 +13,21 @@ struct FetchSeedPhraseView: View {
     @State private var inputText: String = ""
     @State private var keywords: [String] = []
     @State private var goToScan = false
-
+    
     var body: some View {
         NavigationView {
             VStack(spacing: 0) {
                 // Title
-                TitleTopView()
-                    .padding()
-
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Type Your Seed Words")
+                        .font(.system(size: 28, weight: .bold))
+                        .padding(.bottom)
+                    Text("Enter each word in order by typing and pressing space.")
+                        .font(.system(size: 14))
+                        .foregroundColor(.gray)
+                }
+                .padding()
+                
                 // Keywords display
                 KeywordsFlowView(keywords: $keywords, onRemove: { word in
                     keywords.removeAll { $0 == word }
@@ -28,9 +35,9 @@ struct FetchSeedPhraseView: View {
                 .padding(.horizontal)
                 .frame(maxHeight: 300)
                 
-
+                
                 Spacer()
-
+                
                 // Text input for keywords
                 HStack {
                     TextField("Type a word and press space", text: $inputText)
@@ -50,8 +57,8 @@ struct FetchSeedPhraseView: View {
                         }
                 }
                 .padding()
-                .padding(.bottom, 32)
-
+                .padding(.bottom, 8)
+                
                 // Confirmation button
                 LogActionView(goToScan: $goToScan, seedphrase: $keywords)
             }
@@ -63,23 +70,27 @@ struct FetchSeedPhraseView: View {
 // MARK: - Bottom Confirmation Button
 struct LogActionView: View {
     @Binding var goToScan: Bool
-    @Binding var seedphrase : [String]
+    @Binding var seedphrase: [String]
     @StateObject var wallet = EthereumWallet()
+    @State private var navigateToMain = false  // New state variable
 
     var body: some View {
         VStack(spacing: 0) {
             Color.gray.frame(height: 1)
                 .padding(.bottom, 10)
 
+            // Actual NavigationLink (visible to SwiftUI)
+            NavigationLink(destination: MainView(), isActive: $navigateToMain) {
+                EmptyView()
+            }
+
             Button(action: {
                 do {
-                                    try wallet.importWallet(from: seedphrase.joined(separator: " "))
-                    print(wallet.privateKeyHex)  // derived key
-                    print(wallet.address)
-                    MainView().environmentObject(wallet)
-                                } catch {
-                                   print("\(error.localizedDescription)")
-                                }
+                    try wallet.importWallet(from: seedphrase.joined(separator: " "))
+                    navigateToMain = true  // Trigger navigation
+                } catch {
+                    print("Wallet import failed: \(error.localizedDescription)")
+                }
             }) {
                 Text("Confirm")
                     .font(.system(size: 18, weight: .regular))
@@ -94,6 +105,7 @@ struct LogActionView: View {
         }
     }
 }
+
 
 struct FetchSeedPhrase_Preview: PreviewProvider {
     static var previews: some View {

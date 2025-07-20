@@ -280,6 +280,7 @@
 //    ConfirmSecretPhraseView()
 //})
 
+
 import SwiftUI
 
 struct ConfirmSecretPhraseView: View {
@@ -287,6 +288,7 @@ struct ConfirmSecretPhraseView: View {
     @State private var inputText: String = ""
     @State private var keywords: [String] = []
     @State private var goToScan = false
+    var words: [SecretWord]?
 
     var body: some View {
         NavigationView {
@@ -301,7 +303,6 @@ struct ConfirmSecretPhraseView: View {
                 })
                 .padding(.horizontal)
                 .frame(maxHeight: 300)
-                
 
                 Spacer()
 
@@ -324,10 +325,13 @@ struct ConfirmSecretPhraseView: View {
                         }
                 }
                 .padding()
-                .padding(.bottom, 32)
+                .padding(.bottom, 8)
 
-                // Confirmation button
-                BottomView(goToScan: $goToScan, seedphrase: $keywords)
+                BottomView(
+                    goToScan: $goToScan,
+                    seedphrase: $keywords,
+                    words: words
+                )
             }
             .navigationBarBackButtonHidden()
         }
@@ -360,31 +364,30 @@ struct KeywordsFlowView: View {
             var y: CGFloat = 0
 
             ZStack(alignment: .topLeading) {
-                ForEach(Array(keywords.enumerated()), id: \ .offset) { index, word in
-                    let item = KeywordCard(word: word) {
+                ForEach(Array(keywords.enumerated()), id: \.offset) { index, word in
+                    KeywordCard(word: word) {
                         onRemove(word)
                     }
-                    item
-                        .alignmentGuide(.leading) { dimension in
-                            if abs(x - dimension.width) > width {
-                                x = 0
-                                y -= dimension.height + 8
-                            }
-                            let result = x
-                            if index == keywords.count - 1 {
-                                x = 0
-                            } else {
-                                x -= dimension.width + 8
-                            }
-                            return result
+                    .alignmentGuide(.leading) { dimension in
+                        if abs(x - dimension.width) > width {
+                            x = 0
+                            y -= dimension.height + 8
                         }
-                        .alignmentGuide(.top) { _ in
-                            let result = y
-                            if index == keywords.count - 1 {
-                                y = 0
-                            }
-                            return result
+                        let result = x
+                        if index == keywords.count - 1 {
+                            x = 0
+                        } else {
+                            x -= dimension.width + 8
                         }
+                        return result
+                    }
+                    .alignmentGuide(.top) { _ in
+                        let result = y
+                        if index == keywords.count - 1 {
+                            y = 0
+                        }
+                        return result
+                    }
                 }
             }
         }
@@ -416,19 +419,31 @@ struct KeywordCard: View {
 // MARK: - Bottom Confirmation Button
 struct BottomView: View {
     @Binding var goToScan: Bool
-    @Binding var seedphrase : [String]
+    @Binding var seedphrase: [String]
+    @StateObject private var wallet = EthereumWallet()
+    var words: [SecretWord]?
 
     var body: some View {
         VStack(spacing: 0) {
             Color.gray.frame(height: 1)
                 .padding(.bottom, 10)
 
-            NavigationLink(destination: WalletView(seedPhrase: seedphrase.joined(separator: " ")), isActive: $goToScan) {
+            NavigationLink(
+                destination: HomeView(),
+                isActive: $goToScan
+            ) {
                 EmptyView()
             }
 
             Button(action: {
-                goToScan = true
+                let originalWords = words?
+                    .sorted(by: { $0.index < $1.index })
+                    .map { $0.text } ?? []
+
+                if originalWords == seedphrase {
+                    wallet.createWallet(from: seedphrase.joined(separator: " "), passphrase: "")
+                    goToScan = true
+                }
             }) {
                 Text("Confirm")
                     .font(.system(size: 18, weight: .regular))
@@ -444,8 +459,13 @@ struct BottomView: View {
     }
 }
 
+// MARK: - Preview
 struct ConfirmSecretPhraseView_Previews: PreviewProvider {
     static var previews: some View {
-        ConfirmSecretPhraseView()
+        ConfirmSecretPhraseView(words: [
+            SecretWord(index: 0, text: "word1"),
+            SecretWord(index: 1, text: "word2"),
+            SecretWord(index: 2, text: "word3")
+        ])
     }
 }

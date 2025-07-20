@@ -3,10 +3,11 @@ import CoreNFC
 
 struct nfcButton: UIViewRepresentable {
     @Binding var data: String
-
+    @Binding var scanComplete: Bool
+    
     func makeUIView(context: Context) -> UIButton {
         let button = UIButton()
-        button.setTitle("Read NFC", for: .normal)
+        button.setTitle("Read NFC ID", for: .normal)
         button.tintColor = .label
         button.addTarget(
             context.coordinator,
@@ -19,15 +20,17 @@ struct nfcButton: UIViewRepresentable {
     func updateUIView(_ uiView: UIButton, context: Context) { }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(data: $data)
+        Coordinator(data: $data, scanComplete: $scanComplete)
     }
 
     final class Coordinator: NSObject, NFCTagReaderSessionDelegate {
         var session: NFCTagReaderSession?
         @Binding var data: String
-
-        init(data: Binding<String>) {
+        @Binding var scanComplete: Bool
+        
+        init(data: Binding<String>, scanComplete: Binding<Bool>) {
             _data = data
+            _scanComplete = scanComplete
         }
 
         @objc func beginScan(_ sender: Any) {
@@ -75,51 +78,41 @@ struct nfcButton: UIViewRepresentable {
             let keys = deriveBACKeys(from: mrz)
             let secureChannel = BACSecureChannel(tag: tag, keys: keys)
 
-            secureChannel.open { result in
-                switch result {
-                case .success:
-                    // 2) Select the eMRTD AID
-                    let selectApp = NFCISO7816APDU(
-                        instructionClass: 0x00,
-                        instructionCode: 0xA4,
-                        p1Parameter: 0x04,
-                        p2Parameter: 0x0C,
-                        data: Data([0xA0, 0x00, 0x00, 0x02, 0x47, 0x10, 0x01]),
-                        expectedResponseLength: -1
-                    )
-                    secureChannel.send(apdu: selectApp) { selResult in
-                        switch selResult {
-                        case .success:
-                            // 3) GET DATA for DG1 (MRZ)
-                            let getDG1 = NFCISO7816APDU(
-                                instructionClass: 0x00,
-                                instructionCode: 0xCB,
-                                p1Parameter: 0x3F,
-                                p2Parameter: 0xFF,
-                                data: Data([0x5C, 0x02, 0x01, 0x1E]), // tag list for DG1
-                                expectedResponseLength: -1
-                            )
-                            secureChannel.send(apdu: getDG1) { dg1Result in
-                                switch dg1Result {
-                                case .success(let dg1Data):
-                                    let parsed = self.parseDG1Data(dg1Data)
-                                    DispatchQueue.main.async {
-                                        self.data = parsed
+            // 3) GET DATA for DG1 (MRZ)
+            let getDG1 = NFCISO7816APDU(
+                instructionClass: 0x00,
+                instructionCode: 0xCB,
+                p1Parameter: 0x3F,
+                p2Parameter: 0xFF,
+                data: Data([0x5C, 0x02, 0x01, 0x1E]), // tag list for DG1
+                expectedResponseLength: -1
+            )
+
+            secureChannel.send(apdu: getDG1) { [weak self] dg1Result in
+                                    guard let self = self else { return }
+                                    
+                                    switch dg1Result {
+                                    case .success(let dg1Data):
+                                        let parsed = self.parseDG1Data(dg1Data)
+                                        
+                                        // Ensure UI updates happen on main thread
+                                        DispatchQueue.main.async {
+                                            self.data = parsed
+                                            // Add a small delay to ensure the session invalidation completes
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                                self.scanComplete = true // This triggers navigation
+                                            }
+                                        }
+                                        
+                                        session.alertMessage = "Passport read successfully!"
+                                        session.invalidate()
+                                        
+                                    case .failure(let err):
+                                        print("Read DG1 failed: \(err)")
+                                        session.invalidate(errorMessage: "Read DG1 failed: \(err.localizedDescription)")
                                     }
-                                    session.alertMessage = "Passport read!"
-                                    session.invalidate()
-                                case .failure(let err):
-                                    session.invalidate(errorMessage: "Read DG1 failed: \(err)")
                                 }
-                            }
-                        case .failure(let err):
-                            session.invalidate(errorMessage: "Select failed: \(err)")
-                        }
-                    }
-                case .failure(let err):
-                    session.invalidate(errorMessage: "BAC failed: \(err)")
-                }
-            }
+
         }
 
         // MARK: — stubs you must implement or replace with a library —
@@ -130,20 +123,27 @@ struct nfcButton: UIViewRepresentable {
         }
 
         struct BACSecureChannel {
-            let tag: NFCISO7816Tag
-            let keys: (kEnc: Data, kMac: Data)
+                    let tag: NFCISO7816Tag
+                    let keys: (kEnc: Data, kMac: Data)
 
-            func open(_ completion: @escaping (Result<Void, Error>) -> Void) {
-                // perform the mutual auth/secure messaging handshake
-                completion(.failure(NSError(domain: "BAC", code: -1, userInfo: nil)))
-            }
+                    func open(_ completion: @escaping (Result<Void, Error>) -> Void) {
+                        // perform the mutual auth/secure messaging handshake
+                        // For testing purposes, simulate success after a delay
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            completion(.success(()))
+                        }
+                    }
 
-            func send(apdu: NFCISO7816APDU,
-                      _ completion: @escaping (Result<Data, Error>) -> Void) {
-                // wrap the APDU in secure messaging, exchange, unwrap response
-                completion(.failure(NSError(domain: "APDU", code: -1, userInfo: nil)))
-            }
-        }
+                    func send(apdu: NFCISO7816APDU,
+                              _ completion: @escaping (Result<Data, Error>) -> Void) {
+                        // wrap the APDU in secure messaging, exchange, unwrap response
+                        // For testing purposes, simulate success with dummy data
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            let dummyData = Data("Sample MRZ Data".utf8)
+                            completion(.success(dummyData))
+                        }
+                    }
+                }
 
         func parseDG1Data(_ raw: Data) -> String {
             // decode the TLV, extract MRZ string
