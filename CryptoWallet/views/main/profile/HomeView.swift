@@ -777,6 +777,20 @@ struct HomeTopView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 40))
             }
 
+//            ZStack {
+//                Circle()
+//                    .fill(LinearGradient(
+//                        colors: [Color.blue.opacity(0.8), Color.purple.opacity(0.8)],
+//                        startPoint: .topLeading,
+//                        endPoint: .bottomTrailing
+//                    ))
+//                    .frame(width: 65, height: 65)
+//                
+//                Text("A")
+//                    .font(.system(size: 30, weight: .semibold))
+//                    .foregroundColor(.white)
+//            }
+//            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
             
             
             VStack(alignment: .leading, spacing: 6) {
@@ -829,18 +843,17 @@ struct HomeBalanceView: View {
     
     var body: some View {
         HStack {
-            
-                VStack (alignment: .leading) {
-                    Text("Your Balance")
-                        .font(.title2)
-                        .foregroundColor(.primary.opacity(0.7))
-                        .padding(.bottom, 2)
-                    
-                    Text("\(wallet.balance) ETH")
-                        .font(.title)
-                        .fontWeight(.medium)
-                        .foregroundStyle(.primary.opacity(0.8))
-                }
+            VStack (alignment: .leading) {
+                Text("Your Balance")
+                    .font(.title2)
+                    .foregroundColor(.white.opacity(0.8)) // Changed to white for better contrast
+                    .padding(.bottom, 2)
+                
+                Text("\(wallet.balance) ETH")
+                    .font(.title)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.white) // Changed to white for better contrast
+            }
             .padding(.top, 20)
             .padding(.horizontal, 25)
             
@@ -853,32 +866,40 @@ struct HomeBalanceView: View {
                     Text(String(format: "$%.2f USD", balance * 3795.50))
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.white.opacity(0.7)) // Adjusted for gradient
                         .padding(.bottom, 4)
                     
-                    Text(String(format: "$%.2f BDT", balance * 461_365.72)) // Corrected comma for large number literal
+                    Text(String(format: "৳%.2f BDT", balance * 461_365.72)) // Corrected comma for large number literal
                         .font(.callout)
                         .fontWeight(.semibold)
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.white.opacity(0.7)) // Adjusted for gradient
                         .padding(.bottom, 40)
                     
                 } else {
                     Text("Invalid balance")
                         .font(.headline)
-                        .foregroundColor(.red)
+                        .foregroundColor(.white) // Keep visible on colorful background
                 }
             }
             .padding(.trailing)
-
-            
         }
         .frame(height: 170)
-        .background(.white)
+        // Colorful Gradient Background
+        .background(
+            RadialGradient(
+                gradient: Gradient(colors: [Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3")]),
+                center: .topTrailing,
+                startRadius: 100,
+                endRadius: 800
+            )
+            .opacity(0.5)
+        )
         .cornerRadius(15, corners: .allCorners)
-        .shadow(radius: 4)
+        // Removed shadow, as the gradient itself provides a strong visual presence
         .padding(.horizontal, 20)
     }
 }
+
 
 
 struct ListsCategoriesView: View {
