@@ -15,7 +15,7 @@ struct FetchSeedPhraseView: View {
     @State private var goToScan = false
     
     var body: some View {
-        NavigationView {
+        
             VStack(spacing: 0) {
                 // Title
                 VStack(alignment: .leading, spacing: 4) {
@@ -62,8 +62,7 @@ struct FetchSeedPhraseView: View {
                 // Confirmation button
                 LogActionView(goToScan: $goToScan, seedphrase: $keywords)
             }
-            .navigationBarBackButtonHidden()
-        }
+            
     }
 }
 
@@ -73,6 +72,7 @@ struct LogActionView: View {
     @Binding var seedphrase: [String]
     @StateObject var wallet = EthereumWallet()
     @State private var navigateToMain = false  // New state variable
+    @AppStorage("SeedPhrase") private var sp: String = ""
 
     var body: some View {
         VStack(spacing: 0) {
@@ -80,13 +80,19 @@ struct LogActionView: View {
                 .padding(.bottom, 10)
 
             // Actual NavigationLink (visible to SwiftUI)
-            NavigationLink(destination: MainView(), isActive: $navigateToMain) {
+            NavigationLink(
+                destination: MainView(
+                    seedPhrase: seedphrase.joined(separator: " ")
+                ),
+                isActive: $navigateToMain
+            ) {
                 EmptyView()
             }
 
             Button(action: {
                 do {
                     try wallet.importWallet(from: seedphrase.joined(separator: " "))
+                    sp = seedphrase.joined(separator: " ")
                     navigateToMain = true  // Trigger navigation
                 } catch {
                     print("Wallet import failed: \(error.localizedDescription)")

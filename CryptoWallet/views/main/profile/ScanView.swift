@@ -1,84 +1,3 @@
-//import SwiftUI
-//
-//struct ScanView: View {
-//    
-//    @State var address: String = ""
-//    
-//    var body: some View {
-//        ZStack (alignment: .top) {
-//            RadialGradient(gradient: Gradient(colors: [Color("#7A17D7"), Color("#ED74CD"), Color("#EBB5A3") ]), center: .topTrailing, startRadius: 100, endRadius: 800)
-//                .frame(maxHeight: .infinity)
-//                .edgesIgnoringSafeArea(.top)
-//            
-//            VStack {
-//                
-//                VStack {
-//                    Image(systemName: "qrcode.viewfinder")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .foregroundColor(.white)
-//                        .frame(width: 300, height: 200)
-//                }
-//                .frame(height: 400)
-//                
-//                
-//                
-//                VStack (alignment: .leading) {
-//                    Text("Scan Barcode")
-//                        .font(.custom(FontUtils.MAIN_BOLD, size: 26))
-//                        .foregroundColor(.black)
-//                    
-//                    Text("Or Input Wallet Address")
-//                        .font(.custom(FontUtils.MAIN_REGULAR, size: 16))
-//                        .foregroundColor(.gray)
-//                    
-//                    
-//                    TextField("Input Wallet address", text: $address)
-//                        .padding()
-//                        .frame(maxWidth: .infinity, minHeight: 50)
-//                        .padding(5)
-//                        .background(Color.white)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 30)
-//                                .stroke(Color.black, lineWidth: 2)
-//                        )
-//                        .cornerRadius(30)
-//                        .padding(.top, 10)
-//                    
-//                    
-//                    Button {  } label: {
-//                        Text("Confirmation")
-//                            .font(.custom(FontUtils.MAIN_REGULAR, size: 18))
-//                            .foregroundColor(.white)
-//                            .padding(10)
-//                        
-//                    }
-//                    .frame(maxWidth: .infinity, minHeight: 50)
-//                    .padding(5)
-//                    .background(Color.black)
-//                    .cornerRadius(30)
-//                    .padding(.top, 50)
-//                    
-//                    Spacer()
-//                }
-//                .padding(.top, 20)
-//                .padding(.horizontal, 30)
-//                .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                .background(.white)
-//                .cornerRadius(30, corners: [.topLeft, .topRight])
-//                
-//                
-//            }
-//        }
-//    }
-//}
-//
-//struct ScanView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ScanView()
-//    }
-//}
-
 import SwiftUI
 import Toast
 import CodeScanner
@@ -93,6 +12,9 @@ struct ScanView: View {
     @State private var walletBalance: Double = 1250.75 // Mock balance
     @AppStorage("walletAddress") private var walletAddress: String = ""
     
+    @StateObject private var wallet = EthereumWallet()
+    let seedPhrase: String // Pass this from parent view
+    
     var body: some View {
         ZStack(alignment: .top) {
             RadialGradient(
@@ -105,19 +27,16 @@ struct ScanView: View {
             .edgesIgnoringSafeArea(.top)
             
             VStack(spacing: 0) {
-                // Header with wallet balance
                 VStack(spacing: 10) {
                     Text("Wallet Balance")
                         .font(.custom(FontUtils.MAIN_REGULAR, size: 16))
                         .foregroundColor(.white.opacity(0.8))
                     
-                    Text("$\(walletBalance, specifier: "%.2f")")
+                    Text("\(wallet.balance) ETH")
                         .font(.custom(FontUtils.MAIN_BOLD, size: 32))
                         .foregroundColor(.white)
                     
-                    // Quick action buttons
                     HStack(spacing: 20) {
-                        
                         Button(action: { showingSendTransaction = true }) {
                             VStack(spacing: 5) {
                                 Image(systemName: "paperplane.fill")
@@ -152,9 +71,7 @@ struct ScanView: View {
                 .padding(.top, 20)
                 .padding(.bottom, 4)
                 
-                // Main content area
                 VStack(alignment: .leading, spacing: 20) {
-                    // QR Scanner section
                     VStack(spacing: 15) {
                         Button(action: { showingQRScanner = true }) {
                             VStack(spacing: 10) {
@@ -182,7 +99,6 @@ struct ScanView: View {
                     
                     Spacer()
                     
-                    // Manual input section
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Or Input Wallet Address")
                             .font(.headline)
@@ -202,7 +118,6 @@ struct ScanView: View {
                             )
                             .cornerRadius(15)
                             .padding(.bottom)
-                            
                         
                         HStack(spacing: 15) {
                             Button(action: {
@@ -237,15 +152,27 @@ struct ScanView: View {
             }
         }
         .sheet(isPresented: $showingSendTransaction) {
-            SendTransactionView(recipientAddress: address)
+            SendTransactionView(
+                recipientAddress: address,
+                seedPhrase: seedPhrase,
+                wallet: wallet // Pass the shared one
+            )
         }
         .sheet(isPresented: $showingReceiveTransaction) {
-            ReceiveTransactionView(myAddress: walletAddress)
+            ReceiveTransactionView(myAddress: wallet.address.isEmpty ? walletAddress : wallet.address)
+        }
+        .onAppear {
+            if wallet.address.isEmpty && !seedPhrase.isEmpty {
+                do {
+                    try wallet.importWallet(from: seedPhrase)
+                } catch {
+                    print("❗️Failed to import wallet: \(error)")
+                }
+            }
         }
     }
 }
 
-// QR Scanner View
 struct QRScannerView: View {
     let onCodeScanned: (String) -> Void
     @Environment(\.presentationMode) var presentationMode
@@ -269,8 +196,8 @@ struct QRScannerView: View {
 }
 
 
-// Send Transaction View
 struct SendTransactionView: View {
+    @ObservedObject var wallet: EthereumWallet
     @State var recipientAddress: String
     @State private var amount: String = ""
     @State private var note: String = ""
@@ -279,10 +206,43 @@ struct SendTransactionView: View {
     @State private var selectedDocument: URL?
     @Environment(\.presentationMode) var presentationMode
     
+    let seedPhrase: String?
+    
+    init(recipientAddress: String, seedPhrase: String? = nil, wallet: EthereumWallet) {
+        self.recipientAddress = recipientAddress
+        self.seedPhrase = seedPhrase
+        self.wallet = wallet
+    }
+    
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
+                    if !wallet.address.isEmpty {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Your Balance:")
+                                .font(.custom(FontUtils.MAIN_REGULAR, size: 14))
+                                .foregroundColor(.gray)
+                            
+                            HStack {
+                                Text("\(wallet.balance) ETH")
+                                    .font(.custom(FontUtils.MAIN_BOLD, size: 20))
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                                
+                                Button("Refresh") {
+                                    wallet.getBalance()
+                                }
+                                .font(.custom(FontUtils.MAIN_REGULAR, size: 12))
+                                .disabled(wallet.isLoading)
+                            }
+                        }
+                        .padding()
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(12)
+                    }
+                    
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Recipient Address:")
                             .font(.custom(FontUtils.MAIN_BOLD, size: 16))
@@ -296,17 +256,6 @@ struct SendTransactionView: View {
                     }
                     
                     FloatingLabelTextField(amount: $amount)
-                    
-//                    VStack(alignment: .leading, spacing: 10) {
-//                        Text("Note (Optional):")
-//                            .font(.custom(FontUtils.MAIN_BOLD, size: 16))
-//                        
-//                        TextField("Add a note...", text: $note)
-//                            .font(.custom(FontUtils.MAIN_REGULAR, size: 16))
-//                            .padding()
-//                            .background(Color.gray.opacity(0.1))
-//                            .cornerRadius(10)
-//                    }
                     
                     VStack(alignment: .leading, spacing: 10) {
                         Toggle("Attach Invoice/PDF", isOn: $attachInvoice)
@@ -327,19 +276,59 @@ struct SendTransactionView: View {
                         }
                     }
                     
+                    // Loading indicator (from WalletView)
+                    if wallet.isLoading {
+                        HStack {
+                            Spacer()
+                            ProgressView("Processing transaction...")
+                                .progressViewStyle(CircularProgressViewStyle())
+                            Spacer()
+                        }
+                        .padding()
+                    }
+                    
+                    if !wallet.errorMessage.isEmpty {
+                        Text(wallet.errorMessage)
+                            .foregroundColor(.red)
+                            .padding()
+                            .background(Color.red.opacity(0.1))
+                            .cornerRadius(8)
+                    }
+                    
                     Button(action: {
-                        // Handle send transaction
-                        presentationMode.wrappedValue.dismiss()
+                        if !wallet.address.isEmpty {
+                            wallet.sendTransaction(to: recipientAddress, amount: amount)
+                        }
                     }) {
                         Text("Send Transaction")
                             .font(.custom(FontUtils.MAIN_BOLD, size: 18))
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity, minHeight: 50)
-                            .background(amount.isEmpty ? Color.gray : Color.green)
+                            .background((amount.isEmpty || recipientAddress.isEmpty || wallet.address.isEmpty || wallet.isLoading) ? Color.gray : Color.green)
                             .cornerRadius(15)
                     }
-                    .disabled(amount.isEmpty)
+                    .disabled(amount.isEmpty || recipientAddress.isEmpty || wallet.address.isEmpty || wallet.isLoading)
                     .padding(.top, 20)
+                    
+                    if wallet.address.isEmpty {
+                        VStack(spacing: 15) {
+                            Text("No wallet found. Create or import a wallet to send transactions.")
+                                .font(.custom(FontUtils.MAIN_REGULAR, size: 14))
+                                .foregroundColor(.orange)
+                                .multilineTextAlignment(.center)
+                                .padding()
+                                .background(Color.orange.opacity(0.1))
+                                .cornerRadius(8)
+                            
+                            if let seedPhrase = seedPhrase {
+                                Button("Create Wallet from Seed") {
+                                    wallet.createWallet(from: seedPhrase)
+                                }
+                                .buttonStyle(.borderedProminent)
+                                .disabled(wallet.isLoading)
+                            }
+                        }
+                    }
                 }
                 .padding()
             }
@@ -352,6 +341,10 @@ struct SendTransactionView: View {
         }
         .sheet(isPresented: $showingDocumentPicker) {
             DocumentPicker(selectedDocument: $selectedDocument)
+        }
+        .onChange(of: wallet.errorMessage) { errorMessage in
+            if errorMessage.isEmpty && !wallet.isLoading {
+            }
         }
     }
 }
@@ -401,7 +394,6 @@ struct FloatingLabelTextField: View {
 
 
 
-// Receive Transaction View
 struct ReceiveTransactionView: View {
     let myAddress: String
     @Environment(\.presentationMode) var presentationMode
@@ -545,6 +537,6 @@ extension Color {
 
 struct ScanView_Previews: PreviewProvider {
     static var previews: some View {
-        ScanView()
+        ScanView(seedPhrase: "ASDF ASDF ASDF ASD FASDF SAD F")
     }
 }

@@ -12,22 +12,23 @@ struct WelcomeView: View {
                     .edgesIgnoringSafeArea(.all)
                 VStack {
                     VStack {
-                        Image("logo")
+                        Image(systemName: "wallet.bifold.fill")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 150)
                             .padding(.top, 50)
+ 
                         Text("CryptoWallet")
                             .font(.title.bold())
                     }
                     Spacer()
                     VStack {
-                        Text("Use our app to safely do the transactions")
+                        Text("Your trusted companion for safe and seamless crypto transactions — simple, secure, and always in your control")
                             .foregroundColor(.gray)
-                            .font(.custom(FontUtils.MAIN_REGULAR, size: 16))
+                            .font(.callout)
                             .multilineTextAlignment(.center)
                             .padding(.top, 1)
-                        Spacer(minLength: 20)
+                        Spacer()
                         
 //                        NavigationLink(destination: NFCScanInstructionView(),
 //                                       isActive: $viewModel.shouldShowNFCScan,
@@ -43,7 +44,7 @@ struct WelcomeView: View {
                         
                         Button {
                             isNewWallet = true
-                            // viewModel.startVerification()
+                            viewModel.startVerification()
                             // NFCScanInstructionView()
                             // SecretPhraseView()
                         } label: {

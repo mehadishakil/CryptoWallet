@@ -8,7 +8,7 @@ struct WalletView: View {
     @State private var privateKeyInput = ""
     @State private var showingImportSheet = false
     @State private var showingPrivateKey = false
-    let seedPhrase: String
+    // let seedPhrase: String
     
     var body: some View {
         NavigationView {
@@ -97,7 +97,7 @@ struct WalletView: View {
                 VStack(spacing: 15) {
                     Button("Create New Wallet") {
                         // wallet.createWallet()
-                        wallet.createWallet(from: seedPhrase)
+                        // wallet.createWallet(from: seedPhrase)
                         print(wallet.privateKeyHex)  // derived key
                         print(wallet.address)
                     }
@@ -237,8 +237,6 @@ struct ImportWalletView: View {
 
 
 #Preview {
-    WalletView(
-        seedPhrase: "asd asdf asdfasdf asdf asdf asdfasd fas asdf asdfasdf asdf asdf asdfasdf asdfasdf asdfadsf"
-    )
+    WalletView()
 }
 

@@ -99,7 +99,7 @@ struct nfcButton: UIViewRepresentable {
                                         DispatchQueue.main.async {
                                             self.data = parsed
                                             // Add a small delay to ensure the session invalidation completes
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                                                 self.scanComplete = true // This triggers navigation
                                             }
                                         }

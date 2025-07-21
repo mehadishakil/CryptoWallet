@@ -422,6 +422,7 @@ struct BottomView: View {
     @Binding var seedphrase: [String]
     @StateObject private var wallet = EthereumWallet()
     var words: [SecretWord]?
+    @AppStorage("SeedPhrase") private var sp: String = ""
 
     var body: some View {
         VStack(spacing: 0) {
@@ -442,6 +443,7 @@ struct BottomView: View {
 
                 if originalWords == seedphrase {
                     wallet.createWallet(from: seedphrase.joined(separator: " "), passphrase: "")
+                    sp = seedphrase.joined(separator: " ")
                     goToScan = true
                 }
             }) {

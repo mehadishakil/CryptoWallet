@@ -142,6 +142,7 @@ struct MainView: View {
     @State private var showUploadIDPhotoView = false
     @State private var showNFCScanInstructionView = false
     @EnvironmentObject private var authController: AuthController
+    let seedPhrase: String
 
     var body: some View {
         TabView {
@@ -165,7 +166,7 @@ struct MainView: View {
 //            NFCScanInstructionView()
 //                .tabItem { Label("Verification", systemImage: "touchid") }
 
-            ScrollView { ScanView() }
+            ScrollView { ScanView(seedPhrase: seedPhrase) }
                 .tabItem { Label("Transfer", systemImage: "arrow.up.arrow.down") }
             
             InvoiceScreenView()
@@ -564,7 +565,7 @@ extension Notification.Name {
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
+        MainView(seedPhrase: "asdf asdf asf asdf asdf asdf asdf asdf asd fasd fsadf asd ffs")
     }
 }
 
